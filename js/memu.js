@@ -137,6 +137,37 @@ $(function () {
         $("button").blur();
     });
 
+    // AI Bridge Layer Menu Items
+    $("#ai-dsl-import").click(function () {
+        AIBridge.showEditor(mycircuit);
+    });
+
+    $("#ai-dsl-export").click(function () {
+        AIBridge.showExport(mycircuit);
+    });
+
+    $("#ai-examples").click(function () {
+        var examples = AIBridge.getExamples();
+        var exampleList = "可用示例 (Available Examples):\n\n";
+        for (var key in examples) {
+            exampleList += "- " + key + "\n";
+        }
+        exampleList += "\n选择一个示例查看代码:\n";
+        var choice = prompt(exampleList + "\n输入示例名称 (Enter example name):", "simple_counter");
+
+        if (choice && examples[choice]) {
+            var useExample = confirm("示例代码:\n\n" + examples[choice] + "\n\n是否导入此示例到当前电路？\nImport this example to current circuit?");
+            if (useExample) {
+                var result = AIBridge.execute(examples[choice], mycircuit);
+                if (result.success) {
+                    alert("示例导入成功！\nExample imported successfully!\n\n" + result.message);
+                } else {
+                    alert("导入失败 (Import failed):\n" + result.error);
+                }
+            }
+        }
+    });
+
 });
 
 var lcolor;

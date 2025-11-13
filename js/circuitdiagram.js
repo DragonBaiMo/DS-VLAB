@@ -3,25 +3,25 @@ Duosi Principles of Computer Composition Virtual Experiment System ,DS-VLAB v1.0
 Copyright(C)2013 ZHANG Wen-fen, Email: yydzhwf@163.com  Address: Xiangnan University, Chenzhou Hunan, China
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or any later version.
 
-¶àË¼¼ÆËã»ú×é³ÉÔ­ÀíÍøÂçĞéÄâÊµÑéÏµÍ³, DS-VLAB v1.0 £¨2013Äê¿ª·¢£¬2016Äê·¢²¼£©
-°æÈ¨ËùÓĞ(C) ÕÅö©ëƒ, µç×ÓÓÊÏä: yydzhwf@163.com
-±¾³ÌĞòÎª×ÔÓÉÈí¼ş£»Äú¿ÉÒÀ¾İ×ÔÓÉÈí¼ş»ù½ğ»áËù·¢±íµÄGNU GENERAL PUBLIC LICENSE£¬¶Ô±¾³ÌĞòÔÙ´Î·¢²¼ºÍ/»òĞŞ¸Ä¡£
+ï¿½ï¿½Ë¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ÏµÍ³, DS-VLAB v1.0 ï¿½ï¿½2013ï¿½ê¿ªï¿½ï¿½ï¿½ï¿½2016ï¿½ê·¢ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½È¨ï¿½ï¿½ï¿½ï¿½(C) ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: yydzhwf@163.com
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½GNU GENERAL PUBLIC LICENSEï¿½ï¿½ï¿½Ô±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù´Î·ï¿½ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½Ş¸Ä¡ï¿½
 
-×÷Õß£ºÏæÄÏÑ§ÔºÈí¼şÓëÍ¨ĞÅ¹¤³ÌÑ§ÔºÕÅö©ëƒÀÏÊ¦
+ï¿½ï¿½ï¿½ß£ï¿½ï¿½ï¿½ï¿½ï¿½Ñ§Ôºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¨ï¿½Å¹ï¿½ï¿½ï¿½Ñ§Ôºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¦
 
-¶àË¼¼ÆËã»ú×é³ÉÔ­ÀíÍøÂçĞéÄâÊµÑéÏµÍ³, DS-VLAB v1.2 £¨2021Äê5ÔÂĞŞ¸Ä£¬ÔÚV1.0°æ±¾»ù´¡ÉÏ½«VML¸ÄÎªSVG£©
+ï¿½ï¿½Ë¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ÏµÍ³, DS-VLAB v1.2 ï¿½ï¿½2021ï¿½ï¿½5ï¿½ï¿½ï¿½Ş¸Ä£ï¿½ï¿½ï¿½V1.0ï¿½æ±¾ï¿½ï¿½ï¿½ï¿½ï¿½Ï½ï¿½VMLï¿½ï¿½ÎªSVGï¿½ï¿½
 */
 
 
 function Circuit() {
-    this.componentAll = [];  //ÒÑ»­³öµÄÊµÑéÆ÷¼şÁĞ±í(²»°üÀ¨ÒÑÉ¾³ıµÄ£©
-    this.count = 0;   //Æ÷¼ş¼ÆÊı£¬°üÀ¨ÒÑÉ¾³ıµÄÆ÷¼ş£¬ÓÃÓÚÉú³ÉÆ÷¼şid
-    this.linecolor = "yellow";
-    var targetPin = null;  //À­Á¬½ÓÏßÊ±µÄÄ¿±êÒı½Å
+    this.componentAll = [];  //ï¿½Ñ»ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ±ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¾ï¿½ï¿½ï¿½Ä£ï¿½
+    this.count = 0;   //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½id
+    this.linecolor = "#00BFFF";  // Changed from yellow to DeepSkyBlue for better visibility
+    var targetPin = null;  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     var _this = this;
     var  arrowCount=0;
 
-    //ÔÚ¸ø¶¨div£¨parentId£©µÄÖ¸¶¨Î»ÖÃ£¨offsetX, offsetY£©´¦»­³öÊµÑéÆ÷¼ş£¨componentName£©
+    //ï¿½Ú¸ï¿½ï¿½ï¿½divï¿½ï¿½parentIdï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½Î»ï¿½Ã£ï¿½offsetX, offsetYï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½componentNameï¿½ï¿½
     this.addComponent = function (parentId, componentName, offsetX, offsetY, componentId) {
         var component = new window[componentName]();
         if (componentId == null) {
@@ -64,7 +64,7 @@ function Circuit() {
         }
         ;
 
-        //»­³öËùÓĞÒı½Å
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         var pinDiv, pn, pinFun;
         for (var i = 0; i < component.pinName.length; i++) {
             pinDiv = document.createElement("div");
@@ -75,7 +75,7 @@ function Circuit() {
                 pinDiv.style.width = component.pinWidth + 2 + "px";
                 pinDiv.style.height = component.pinHeight + "px";
             } else {
-                pinDiv.style.width = component.pinWidth + 6 + "px"; //ÈÃÒı½Å¼ä²¿·ÖÖØµş£¬×ÖºÃ¿´Ğ©
+                pinDiv.style.width = component.pinWidth + 6 + "px"; //ï¿½ï¿½ï¿½ï¿½ï¿½Å¼ä²¿ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ÖºÃ¿ï¿½Ğ©
                 pinDiv.style.height = component.pinHeight + 2 + "px";
             }
             ;
@@ -100,7 +100,7 @@ function Circuit() {
             }
             ;
             pinFun = component.pinFunction[i];
-            if (pinFun == 10 || pinFun == 0) {   //Èç¹ûÊÇÊäÈëÒı½Å
+            if (pinFun == 10 || pinFun == 0) {   //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 pinDiv.style.color = "#003C9D";
                 $(pinDiv).bind("mousedown", doNone);
                 $(pinDiv).bind("mouseenter", function () {
@@ -111,12 +111,12 @@ function Circuit() {
                 });
             }
             ;
-            if (pinFun == 1) {   //Èç¹ûÊÇÊä³öÒı½Å
+            if (pinFun == 1) {   //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 pinDiv.style.color = "green";
                 $(pinDiv).bind("mousedown", lineDrag);
             }
             ;
-            if (pinFun == 11) {   //Èç¹ûÊÇÊäÈë/Êä³öÒı½Å
+            if (pinFun == 11) {   //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 pinDiv.style.color = "#b200ff";
                 $(pinDiv).bind("mouseenter", function () {
                     targetPin = this;
@@ -127,14 +127,14 @@ function Circuit() {
                 $(pinDiv).bind("mousedown", lineDrag);
             }
             ;
-            if (pinFun >= 2) {   //Èç¹ûÊÇÆäËüÒı½Å
+            if (pinFun >= 2) {   //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 $(pinDiv).bind("mousedown", doNone);
             }
             ;
 
             pinDiv.onselectstart = function () {
                 return false;
-            };//²»ÈÃdivÖĞµÄÎÄ×Ö±»Ñ¡ÖĞ
+            };//ï¿½ï¿½ï¿½ï¿½divï¿½Ğµï¿½ï¿½ï¿½ï¿½Ö±ï¿½Ñ¡ï¿½ï¿½
 
             $("#" + compDiv.id).append(pinDiv);
         }
@@ -147,12 +147,34 @@ function Circuit() {
         if (component.name == "SinglePulse")
             $(compDiv).bind("mousedown", singlePulseClick);
 
+        // Special handling for TextLabel component
+        if (component.name == "TextLabel") {
+            var textDiv = document.createElement("div");
+            textDiv.className = "text-label-content";
+            textDiv.style.padding = "5px";
+            textDiv.style.fontSize = component.fontSize + "px";
+            textDiv.style.color = component.fontColor;
+            textDiv.style.fontFamily = component.fontFamily;
+            textDiv.style.cursor = "text";
+            textDiv.innerHTML = component.text.replace(/\n/g, '<br>');
+            compDiv.appendChild(textDiv);
+            compDiv.style.backgroundColor = component.backgroundColor;
+            compDiv.style.border = "1px dashed #cccccc";
+            compDiv.style.minWidth = "100px";
+            compDiv.style.minHeight = "30px";
+
+            $(compDiv).bind("dblclick", function(e) {
+                e.stopPropagation();
+                editTextLabel(component);
+            });
+        }
+
         if (pn != "" && component.showPinNo != false)
             $(compDiv).bind("dblclick", showPinValue);
     };
 
 
-    //Éú³ÉÒ»ÌõÁ¬½ÓÏß
+    //ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     this.lineCreate = function (paintDiv, fromX, fromY, toX, toY) {
         console.log("========" + fromX + "  " + toX)
         var newLine = document.createElement("div");
@@ -201,7 +223,7 @@ function Circuit() {
         return p;
     };
 
-    //Éú³ÉÁ¬½ÓÏßÊ±£¬´ÓÆğÊ¼µãÍùÄ¿±êµãÍÏ¶¯µÄ¹ı³ÌÖĞ£¬ÏßµÄ±ä»¯
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½Ï¶ï¿½ï¿½Ä¹ï¿½ï¿½ï¿½ï¿½Ğ£ï¿½ï¿½ßµÄ±ä»¯
     function lineChange(line, fromX, fromY, toX, toY) {
         var p1X, p1Y, p2X, p2Y;
         if (Math.abs(fromX - toX) > Math.abs(fromY - toY)) {
@@ -232,7 +254,7 @@ function Circuit() {
         $(line).attr("d", path);
      };
 
-    //Éú³ÉÁ¬½ÓÏßÊ±£¬Êó±êµ½´ïÄ¿±êÒı½Åºó£¬µ÷Õû¡¢¶¨Î»Á¬½ÓÏß£»ÍÏ¶¯Æ÷¼şÊ±£¬µ÷ÕûÁ¬½ÓÏß
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½êµ½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½Åºó£¬µï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ß£ï¿½ï¿½Ï¶ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     this.lineAdjust = function (line, startPin, endPin) {
         var sX, sY, eX, eY;
         var st = startPin.offsetTop;
@@ -335,9 +357,9 @@ function Circuit() {
     };
 
 
-    //Êä³öÒı½ÅµÄÊó±êÊÂ¼ş
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
     function lineDrag(a) {
-        window.event.cancelBubble = true;  //½ûÖ¹ÊÂ¼şÃ°Åİµ½ÏÂÒ»²ã
+        window.event.cancelBubble = true;  //ï¿½ï¿½Ö¹ï¿½Â¼ï¿½Ã°ï¿½İµï¿½ï¿½ï¿½Ò»ï¿½ï¿½
         if (!a) a = window.event;
         var d = document;
         var sTop = Math.max(d.body.scrollTop, d.documentElement.scrollTop);
@@ -351,15 +373,15 @@ function Circuit() {
             if (!a) a = window.event;
             var sTop = Math.max(d.body.scrollTop, d.documentElement.scrollTop);
             var sLeft = Math.max(d.body.scrollLeft, d.documentElement.scrollLeft);
-            if (targetPin == null) {  //Êó±ê»¹Ã»µ½´ïÄ¿±êµãÊ±
+            if (targetPin == null) {  //ï¿½ï¿½ê»¹Ã»ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½Ê±
                 lineChange(line, ox, oy, a.clientX + sLeft, a.clientY + sTop);
-            } else { //Êó±êÒÑ½øÈëÄ¿±êÒı½ÅÊ±
+            } else { //ï¿½ï¿½ï¿½ï¿½Ñ½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±
                 _this.lineAdjust(line, originPin, targetPin);
             }
         }
 
         d.onmouseup = function () {
-            if (targetPin == null) {//Èç¹ûÃ»ÓĞ½øÈëÈÎºÎÄ¿±êÒı½Å                   ´ıĞŞ¸Ä£º»¹Ó¦¸Ã¼ì²éÄ¿±êÒı½ÅÊÇ·ñÒÑ¾­±»Á¬½ÓÁË
+            if (targetPin == null) {//ï¿½ï¿½ï¿½Ã»ï¿½Ğ½ï¿½ï¿½ï¿½ï¿½Îºï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½                   ï¿½ï¿½ï¿½Ş¸Ä£ï¿½ï¿½ï¿½Ó¦ï¿½Ã¼ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 var a = $(line).parent()[0];
                 $(a).parent()[0].remove(true);
             } else {
@@ -374,12 +396,12 @@ function Circuit() {
     };
 
 
-    //ÊäÈëÒı½ÅºÍÆäËüÒı½ÅµÄmousedownÊÂ¼ş
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Åºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½mousedownï¿½Â¼ï¿½
     function doNone(a) {
-        window.event.cancelBubble = true;  //½ûÖ¹ÊÂ¼şÃ°Åİµ½ÏÂÒ»²ã
+        window.event.cancelBubble = true;  //ï¿½ï¿½Ö¹ï¿½Â¼ï¿½Ã°ï¿½İµï¿½ï¿½ï¿½Ò»ï¿½ï¿½
     };
 
-    //¸ù¾İid´ÓcomponentAllÖĞÕÒµ½Æ¥ÅäµÄÆ÷¼ş
+    //ï¿½ï¿½ï¿½ï¿½idï¿½ï¿½componentAllï¿½ï¿½ï¿½Òµï¿½Æ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     this.findById = function (Id) {
         for (var i = 0; i < _this.componentAll.length; i++) {
             if (_this.componentAll[i].id == Id)
@@ -389,7 +411,7 @@ function Circuit() {
         return 0;
     };
 
-    //¸ù¾İid´ÓcomponentAllÖĞÕÒµ½Æ¥ÅäµÄÆ÷¼ş²¢É¾³ı
+    //ï¿½ï¿½ï¿½ï¿½idï¿½ï¿½componentAllï¿½ï¿½ï¿½Òµï¿½Æ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¾ï¿½ï¿½
     function deleteById(Id) {
         for (var i = 0; i < _this.componentAll.length; i++) {
             if (_this.componentAll[i].id == Id) {
@@ -404,13 +426,13 @@ function Circuit() {
     };
 
 
-    //°ÑÁ¬½ÓÏßĞÅÏ¢±£´æµ½Æ÷¼ş¶ÔÏóÖĞ,ÉèÖÃline.id
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½æµ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½line.id
     this.addLineToComponent = function (line, startPin, endPin) {
         var sPId, ePId, sCId, sPNo, eCId, ePNo, p;
         sPId = startPin.id;
         p = sPId.indexOf("Pin");
-        sCId = sPId.substring(0, p);//»ñÈ¡ÆğÊ¼Òı½ÅµÄÆ÷¼şID
-        sPNo = sPId.substring(p + 3);//»ñÈ¡ÆğÊ¼Òı½ÅµÄ±àºÅ
+        sCId = sPId.substring(0, p);//ï¿½ï¿½È¡ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½Åµï¿½ï¿½ï¿½ï¿½ï¿½ID
+        sPNo = sPId.substring(p + 3);//ï¿½ï¿½È¡ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ÅµÄ±ï¿½ï¿½
         ePId = endPin.id;
         p = ePId.indexOf("Pin");
         eCId = ePId.substring(0, p);
@@ -422,7 +444,7 @@ function Circuit() {
         line.id = sPId + "To" + ePId;
     };
 
-    //ÍÏ¶¯Æ÷¼şcÊ±£¬¸üĞÂÆäËùÓĞÁ¬½ÓÏß
+    //ï¿½Ï¶ï¿½ï¿½ï¿½ï¿½ï¿½cÊ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     this.lineReplace = function (c) {
         var comp = _this.findById(c.id);
         var i, j, l, s, e;
@@ -439,7 +461,7 @@ function Circuit() {
     };
 
 
-    //É¾³ıÁ¬½ÓÏß
+    //É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     function lineDelete(line) {
         var lId, sPId, ePId, sCId, sPNo, eCId, ePNo, p, i;
         var aline = $(line).find("path")[1];
@@ -456,8 +478,8 @@ function Circuit() {
         sPId = lId.substring(0, p);
         ePId = lId.substring(p + 2);
         p = sPId.indexOf("Pin");
-        sCId = sPId.substring(0, p);//»ñÈ¡ÆğÊ¼Òı½ÅµÄÆ÷¼şID
-        sPNo = sPId.substring(p + 3);//»ñÈ¡ÆğÊ¼Òı½ÅµÄ±àºÅ
+        sCId = sPId.substring(0, p);//ï¿½ï¿½È¡ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½Åµï¿½ï¿½ï¿½ï¿½ï¿½ID
+        sPNo = sPId.substring(p + 3);//ï¿½ï¿½È¡ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ÅµÄ±ï¿½ï¿½
         p = ePId.indexOf("Pin");
         eCId = ePId.substring(0, p);
         ePNo = ePId.substring(p + 3);
@@ -482,11 +504,11 @@ function Circuit() {
         $(line).remove();
     };
 
-    //ÓÒ»÷É¾³ıÁ¬½ÓÏßµÄÊó±êÊÂ¼ş
+    //ï¿½Ò»ï¿½É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ßµï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
     function deleteL(a) {
         if (!a) a = window.event;
         if (a.button == 2) {
-            var r = confirm("ÊÇ·ñÒªÉ¾³ıÁ¬½ÓÏß£¿");
+            var r = confirm("ï¿½Ç·ï¿½ÒªÉ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß£ï¿½");
             if (r == true) {
                 lineDelete(this);
             }
@@ -496,7 +518,7 @@ function Circuit() {
     };
 
 
-    //É¾³ıÆ÷¼şÒÔ¼°ÓëÆ÷¼şÏàÁ¬µÄËùÓĞÁ¬½ÓÏß
+    //É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     function componentDelete(c) {
         var i, j;
         var comp = _this.findById(c.id);
@@ -512,11 +534,11 @@ function Circuit() {
 
     };
 
-    //ÓÒ»÷É¾³ıÆ÷¼ş¼°ÆäÁ¬½ÓÏßµÄÊó±êÊÂ¼ş
+    //ï¿½Ò»ï¿½É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ßµï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
     function deleteC(a) {
         if (!a) a = window.event;
         if (a.button == 2) {
-            var r = confirm("ÊÇ·ñÒªÉ¾³ıÔªÆ÷¼ş¼°ÆäÁ¬½ÓÏß£¿");
+            var r = confirm("ï¿½Ç·ï¿½ÒªÉ¾ï¿½ï¿½Ôªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß£ï¿½");
             if (r == true) {
                 componentDelete(this);
             }
@@ -526,7 +548,7 @@ function Circuit() {
     };
 
 
-    //Ë«»÷Æ÷¼şÏÔÊ¾ËùÓĞÒı½ÅµÄÖµ
+    //Ë«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½Öµ
     function showPinValue() {
         var s = "";
         var comp = _this.findById(this.id);
@@ -583,7 +605,7 @@ function Circuit() {
     };
 
 
-    /*¿ª¹ØµÄÊó±êµ¥»÷ÊÂ¼ş*/
+    /*ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½êµ¥ï¿½ï¿½ï¿½Â¼ï¿½*/
     function switchClick(a) {
         if (!a) a = window.event;
         if (a.button == 2) {
@@ -628,7 +650,7 @@ function Circuit() {
         };
     };
 
-    /*µ¥Âö³åÆ÷¼şµÄÊó±êµ¥»÷ÊÂ¼ş*/
+    /*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½êµ¥ï¿½ï¿½ï¿½Â¼ï¿½*/
     function singlePulseClick(a) {
         if (!a) a = window.event;
         if (a.button == 2) {
@@ -675,6 +697,13 @@ function Circuit() {
     };
 
     this.deletecircuit = function () {
+        // Add confirmation dialog before clearing circuit
+        if (_this.componentAll.length > 0) {
+            if (!confirm("ç¡®è®¤è¦æ¸…ç©ºç”µè·¯å›¾å—ï¼Ÿæ‰€æœ‰æœªä¿å­˜çš„æ›´æ”¹å°†ä¸¢å¤±ã€‚\nAre you sure you want to clear the circuit? All unsaved changes will be lost.")) {
+                return false;
+            }
+        }
+
         var c;
         if ($("#power").attr("src") == "./img/poweron.png") {
             $("#power").attr("src", "./img/poweroff.png");
@@ -688,11 +717,21 @@ function Circuit() {
         }
         ;
 
-        this.count = 0;   //Æ÷¼ş¼ÆÊı£¬°üÀ¨ÒÑÉ¾³ıµÄÆ÷¼ş£¬ÓÃÓÚÉú³ÉÆ÷¼şid
-        var targetPin = null;  //À­Á¬½ÓÏßÊ±µÄÄ¿±êÒı½Å
+        this.count = 0;   //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½id
+        var targetPin = null;  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        return true;
     };
 
 
 };
+
+// Global function to edit text label
+function editTextLabel(component) {
+    var newText = prompt("è¯·è¾“å…¥æ–‡å­—æ ‡æ³¨å†…å®¹ (Enter text label):", component.text);
+    if (newText !== null && newText !== "") {
+        component.text = newText;
+        component.updateDisplay();
+    }
+}
 
 

@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=9">
 
-    <title>¶àË¼¼Æ×éÔ­ÀíÐéÄâÊµÑéÊÒ</title>
+    <title>ï¿½ï¿½Ë¼ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½</title>
     <link rel="shortcut icon" href="./img/dolphin.png" type="image/x-icon"/>
     <link rel="stylesheet" href="./css/flowchart.css">
     <link rel="stylesheet" href="./css/menu.css">
@@ -44,7 +44,16 @@
     <script type='text/javascript' src='./js/component/74ls163.js'></script>
     <script type='text/javascript' src='./js/component/bus.js'></script>
 
+    <!-- New and Extended Components -->
+    <script type='text/javascript' src='./js/component/74ls181_8bit.js'></script>
+    <script type='text/javascript' src='./js/component/74ls163_8bit.js'></script>
+    <script type='text/javascript' src='./js/component/74ls191_8bit.js'></script>
+    <script type='text/javascript' src='./js/component/textlabel.js'></script>
 
+    <!-- AI Bridge Layer -->
+    <script type='text/javascript' src='./js/circuit-dsl.js'></script>
+    <script type='text/javascript' src='./js/circuit-translator.js'></script>
+    <script type='text/javascript' src='./js/ai-bridge.js'></script>
 
     <script type='text/javascript'>
         $(window).load(function () {
@@ -56,7 +65,7 @@
                 return false;
             };
 
-            //³õÊ¼»¯²Ëµ¥¡¢¹¤¾ßÀ¸ºÍ¹¤¾ßÏä
+            //ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½ï¿½ï¿½ï¿½
             menuInit();
             toolbarInit();
             mytoolbox = new toolbox();
@@ -72,39 +81,46 @@
 
 <div id="menu">
     <ul id="navmenu">
-        <li><a href="#">ÎÄ¼þ</a>
+        <li><a href="#">ï¿½Ä¼ï¿½</a>
             <ul>
-                <li><a href="#" id="newfile">ÐÂ½¨</a></li>
-                <li><a href="#" id="opener">´ò¿ª</a></li>
-                <li><a href="#" id="saver">±£´æ</a></li>
+                <li><a href="#" id="newfile">ï¿½Â½ï¿½</a></li>
+                <li><a href="#" id="opener">ï¿½ï¿½</a></li>
+                <li><a href="#" id="saver">ï¿½ï¿½ï¿½ï¿½</a></li>
             </ul>
         </li>
-        <li><a href="#">ÔËÐÐ</a>
+        <li><a href="#">ï¿½ï¿½ï¿½ï¿½</a>
             <ul>
-                <li><a href="#" id="poweron">¿ªµçÔ´</a></li>
-                <li><a href="#" id="poweroff">¹ØµçÔ´</a></li>
-                <li><a href="#" id="powerreset">ÖØÆô</a></li>
+                <li><a href="#" id="poweron">ï¿½ï¿½ï¿½ï¿½Ô´</a></li>
+                <li><a href="#" id="poweroff">ï¿½Øµï¿½Ô´</a></li>
+                <li><a href="#" id="powerreset">ï¿½ï¿½ï¿½ï¿½</a></li>
             </ul>
         </li>
-        <li><a href="#">¹¤¾ß</a>
+        <li><a href="#">ï¿½ï¿½ï¿½ï¿½</a>
             <ul>
-                <li><a href="#" id="memoryrw">´æ´¢Æ÷Ð¾Æ¬¶ÁÐ´</a></li>
-                <li><a href="#" id="colorst">Á¬½ÓÏßÑÕÉ«ÉèÖÃ</a></li>
-                <li><a href="#" id="clockcycle">Ê±ÖÓÖÜÆÚÉèÖÃ</a></li>
+                <li><a href="#" id="memoryrw">ï¿½æ´¢ï¿½ï¿½Ð¾Æ¬ï¿½ï¿½Ð´</a></li>
+                <li><a href="#" id="colorst">ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½</a></li>
+                <li><a href="#" id="clockcycle">Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</a></li>
             </ul>
         </li>
-        <li><a href="#">ÊµÑéÖ¸µ¼</a>
+        <li><a href="#">Êµï¿½ï¿½Ö¸ï¿½ï¿½</a>
             <ul>
-                <li><a href="#" onclick="window.open('experimentguidance.html')">ÊµÑéÖ¸µ¼Êé</a>
+                <li><a href="#" onclick="window.open('experimentguidance.html')">Êµï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½</a>
                 </li>
-                <li><a href="#" onclick="window.open('chipdatasheet.html')">ÊµÑéÆ÷¼þ×ÊÁÏ</a>
+                <li><a href="#" onclick="window.open('chipdatasheet.html')">Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</a>
                 </li>
             </ul>
         </li>
-        <li><a href="#">°ïÖú</a>
+        <li><a href="#">AIï¿½ï¿½ï¿½ï¿½</a>
             <ul>
-                <li><a href="./files/help.pdf" target="_blank">²é¿´°ïÖú</a></li>
-                <li><a href="#" id="about">¹ØÓÚÐéÄâÊµÑéÊÒ</a></li>
+                <li><a href="#" id="ai-dsl-import">DSLï¿½ï¿½ï¿½ï¿½</a></li>
+                <li><a href="#" id="ai-dsl-export">DSLï¿½ï¿½ï¿½ï¿½</a></li>
+                <li><a href="#" id="ai-examples">Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</a></li>
+            </ul>
+        </li>
+        <li><a href="#">ï¿½ï¿½ï¿½ï¿½</a>
+            <ul>
+                <li><a href="./files/help.pdf" target="_blank">ï¿½é¿´ï¿½ï¿½ï¿½ï¿½</a></li>
+                <li><a href="#" id="about">ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½</a></li>
             </ul>
         </li>
     </ul>
@@ -118,10 +134,10 @@
 </div>
 
 <div id="toolbox" class="toolbox">
-    <h1 class="ui-widget-header">ÊµÑéÉè±¸ÁÐ±í</h1>
+    <h1 class="ui-widget-header">Êµï¿½ï¿½ï¿½è±¸ï¿½Ð±ï¿½</h1>
     <div id="accordion-resizer" class="ui-widget-content">
         <div id="accordion">
-            <h3>Êý×Ö¹¦ÄÜÆ÷¼þ</h3>
+            <h3>ï¿½ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</h3>
             <div>
                 <ul>
                     <li class="tooltip">74LS181</li>
@@ -133,9 +149,12 @@
                     <li class="tooltip">74LS139</li>
                     <li class="tooltip">74LS374</li>
                     <li class="tooltip">74LS163</li>
+                    <li class="tooltip">74LS181_8bit</li>
+                    <li class="tooltip">74LS163_8bit</li>
+                    <li class="tooltip">74LS191_8bit</li>
                 </ul>
             </div>
-            <h3>Âß¼­ÃÅµçÂ·</h3>
+            <h3>ï¿½ß¼ï¿½ï¿½Åµï¿½Â·</h3>
             <div>
                 <ul>
                     <li class="tooltip">ANDgate</li>
@@ -146,7 +165,7 @@
                     <li class="tooltip">Triplegate</li>
                 </ul>
             </div>
-            <h3>»ù±¾Ôª¼þ</h3>
+            <h3>ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½</h3>
             <div>
                 <ul>
                     <li class="tooltip">Switch</li>
@@ -155,13 +174,19 @@
                     <li class="tooltip">ContinuousPulse</li>
                 </ul>
             </div>
-            <h3>ÐéÄâ×é¼þ</h3>
+            <h3>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</h3>
             <div>
                 <ul>
                     <li class="tooltip">EPROM2716C3</li>
                     <li class="tooltip">EPROM2716C4</li>
                     <li class="tooltip">SequeTimer</li>
                     <li class="tooltip">BUS</li>
+                </ul>
+            </div>
+            <h3>ï¿½ï¿½×¢ï¿½ï¿½ï¿½ï¿½</h3>
+            <div>
+                <ul>
+                    <li class="tooltip">TextLabel</li>
                 </ul>
             </div>
         </div>
@@ -185,23 +210,23 @@
                 <DIV id=c1><img src="./img/dolphin150.png" height="80" width="80"/></DIV>
             </TD>
             <TD>
-                <DIV id=c2><p style="line-height:0.5;font-size:18px">¶àË¼¼ÆËã»ú×é³ÉÔ­ÀíÍøÂçÐéÄâÊµÑéÏµÍ³</p>
+                <DIV id=c2><p style="line-height:0.5;font-size:18px">ï¿½ï¿½Ë¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ÏµÍ³</p>
                     <p style="line-height:0.5;font-size:18px">DS-VLAB v1.2</p></DIV>
             </TD>
             <TD>
     </table>
-    <p style="line-height:0">Copyright(C)2013 ZHANG Wen-fen ÕÅö©ëƒ </p>
-    <p style="line-height:1.2">×÷Õß£ºÏæÄÏÑ§Ôº¼ÆËã»úÓëÈË¹¤ÖÇÄÜÑ§ÔºÕÅö©ëƒÀÏÊ¦</p>
-    <p style="line-height:1.2">Email£º3541992325@qq.com</p>
-    <p>±¾³ÌÐòÎª×ÔÓÉÈí¼þ£»Äú¿ÉÒÀ¾Ý×ÔÓÉÈí¼þ»ù½ð»áËù·¢±íµÄGNU GENERAL PUBLIC LICENSE£¬¶Ô±¾³ÌÐòÔÙ´Î·¢²¼ºÍ/»òÐÞ¸Ä¡£</p>
+    <p style="line-height:0">Copyright(C)2013 ZHANG Wen-fen ï¿½ï¿½ï¿½ï¿½ï¿½ </p>
+    <p style="line-height:1.2">ï¿½ï¿½ï¿½ß£ï¿½ï¿½ï¿½ï¿½ï¿½Ñ§Ôºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¹ï¿½ï¿½ï¿½ï¿½ï¿½Ñ§Ôºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¦</p>
+    <p style="line-height:1.2">Emailï¿½ï¿½3541992325@qq.com</p>
+    <p>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½GNU GENERAL PUBLIC LICENSEï¿½ï¿½ï¿½Ô±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù´Î·ï¿½ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½Þ¸Ä¡ï¿½</p>
     <p>This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
         License as published by the Free Software Foundation.</p>
 </div>
 
-<div id="mreadwritedlg" title="´æ´¢Æ÷Ð¾Æ¬¶ÁÐ´" style="display: none">
+<div id="mreadwritedlg" title="ï¿½æ´¢ï¿½ï¿½Ð¾Æ¬ï¿½ï¿½Ð´" style="display: none">
     <p>&nbsp;</p>
     <p style="height: 27px; color:#142256">
-        ÇëÑ¡ÔñÓû¶ÁÐ´µÄ´æ´¢Æ÷Ð¾Æ¬£º
+        ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð´ï¿½Ä´æ´¢ï¿½ï¿½Ð¾Æ¬ï¿½ï¿½
         <select id="Select1" name="D1" onchange="mread()">
             <option></option>
         </select>
