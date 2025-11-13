@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>DS-VLAB AI Bridge Layer Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .test-section {
+            background: #f5f5f5;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .test-result {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 3px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        pre {
+            background: #fff;
+            padding: 10px;
+            border: 1px solid #ddd;
+            overflow-x: auto;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>DS-VLAB AI Bridge Layer Test Suite</h1>
+    <p>This page tests the Circuit-DSL parser, translator, and AI bridge layer functionality.</p>
+
+    <div id="test-results"></div>
+
+    <script src="./js/circuit-dsl.js"></script>
+
+    <script>
+        // Test utilities
+        function logTest(testName, success, message, details) {
+            const resultsDiv = document.getElementById('test-results');
+            const testDiv = document.createElement('div');
+            testDiv.className = 'test-section';
+
+            const resultDiv = document.createElement('div');
+            resultDiv.className = 'test-result ' + (success ? 'success' : 'error');
+            resultDiv.innerHTML = '<strong>' + testName + '</strong>: ' +
+                                 (success ? '✓ PASS' : '✗ FAIL') +
+                                 '<br>' + message;
+
+            testDiv.appendChild(resultDiv);
+
+            if (details) {
+                const detailsDiv = document.createElement('div');
+                detailsDiv.className = 'test-result info';
+                detailsDiv.innerHTML = '<strong>Details:</strong><pre>' +
+                                      JSON.stringify(details, null, 2) + '</pre>';
+                testDiv.appendChild(detailsDiv);
+            }
+
+            resultsDiv.appendChild(testDiv);
+        }
+
+        // Test 1: Basic DSL Parsing
+        function testBasicParsing() {
+            const dsl = `
+circuit TestCircuit {
+    components {
+        sw1: Switch at (100, 100)
+        led1: Led at (300, 100)
+    }
+
+    connections {
+        sw1.pin0 -> led1.pin0
+    }
+
+    configuration {
+        linecolor: "#00BFFF"
+    }
+}`;
+
+            const result = CircuitDSL.parse(dsl);
+
+            if (result.success) {
+                const valid = result.ast.name === 'TestCircuit' &&
+                             result.ast.components.length === 2 &&
+                             result.ast.connections.length === 1;
+
+                logTest('Test 1: Basic DSL Parsing', valid,
+                       valid ? 'Successfully parsed simple DSL circuit' : 'Parse result structure incorrect',
+                       result.ast);
+            } else {
+                logTest('Test 1: Basic DSL Parsing', false, 'Parse failed: ' + result.error);
+            }
+        }
+
+        // Test 2: Complex Component with Properties
+        function testComplexComponent() {
+            const dsl = `
+circuit ComplexTest {
+    components {
+        alu: 74LS181_8bit at (200, 150)
+        label: TextLabel at (100, 50) with text="Hello World"
+    }
+
+    connections {
+    }
+}`;
+
+            const result = CircuitDSL.parse(dsl);
+
+            if (result.success) {
+                const textLabel = result.ast.components.find(c => c.id === 'label');
+                const valid = textLabel &&
+                             textLabel.type === 'TextLabel' &&
+                             textLabel.properties.text === 'Hello World';
+
+                logTest('Test 2: Complex Component Parsing', valid,
+                       valid ? 'Successfully parsed component with properties' : 'Properties parsing failed',
+                       result.ast);
+            } else {
+                logTest('Test 2: Complex Component Parsing', false, 'Parse failed: ' + result.error);
+            }
+        }
+
+        // Test 3: Multiple Connections
+        function testMultipleConnections() {
+            const dsl = `
+circuit MultiConnectionTest {
+    components {
+        counter: 74LS163_8bit at (200, 100)
+        led0: Led at (400, 100)
+        led1: Led at (400, 130)
+        led2: Led at (400, 160)
+    }
+
+    connections {
+        counter.QA -> led0.pin0
+        counter.QB -> led1.pin0
+        counter.QC -> led2.pin0
+    }
+}`;
+
+            const result = CircuitDSL.parse(dsl);
+
+            if (result.success) {
+                const valid = result.ast.connections.length === 3 &&
+                             result.ast.connections[0].from === 'counter' &&
+                             result.ast.connections[0].fromPin === 'QA';
+
+                logTest('Test 3: Multiple Connections', valid,
+                       valid ? 'Successfully parsed multiple connections' : 'Connection parsing failed',
+                       result.ast.connections);
+            } else {
+                logTest('Test 3: Multiple Connections', false, 'Parse failed: ' + result.error);
+            }
+        }
+
+        // Test 4: Comments and Whitespace
+        function testCommentsAndWhitespace() {
+            const dsl = `
+// This is a comment
+circuit CommentTest {
+    components {
+        // Another comment
+        sw1: Switch at (100, 100)  // inline comment
+        # Hash comment
+        led1: Led at (300, 100)
+    }
+
+    connections {
+        sw1.pin0 -> led1.pin0
+    }
+}`;
+
+            const result = CircuitDSL.parse(dsl);
+
+            logTest('Test 4: Comments and Whitespace', result.success,
+                   result.success ? 'Successfully handled comments and whitespace' : 'Parse failed: ' + result.error,
+                   result.success ? result.ast : null);
+        }
+
+        // Test 5: All Component Types
+        function testAllComponentTypes() {
+            const types = CircuitDSL.getComponentTypes();
+            const valid = types.length > 20 &&
+                         types.includes('74LS181_8bit') &&
+                         types.includes('74LS163_8bit') &&
+                         types.includes('74LS191_8bit') &&
+                         types.includes('TextLabel');
+
+            logTest('Test 5: Component Type Registry', valid,
+                   valid ? 'All component types registered: ' + types.length + ' types' : 'Component registry incomplete',
+                   types);
+        }
+
+        // Test 6: Error Handling - Invalid Syntax
+        function testErrorHandling() {
+            const invalidDsl = `
+circuit Invalid {
+    components {
+        sw1: Switch at (100 100)  // Missing comma - should fail
+    }
+}`;
+
+            const result = CircuitDSL.parse(invalidDsl);
+
+            logTest('Test 6: Error Handling', !result.success,
+                   !result.success ? 'Correctly detected syntax error: ' + result.error : 'Should have failed but succeeded',
+                   null);
+        }
+
+        // Test 7: Empty Circuit
+        function testEmptyCircuit() {
+            const dsl = `
+circuit EmptyCircuit {
+    components {
+    }
+
+    connections {
+    }
+}`;
+
+            const result = CircuitDSL.parse(dsl);
+
+            if (result.success) {
+                const valid = result.ast.components.length === 0 &&
+                             result.ast.connections.length === 0;
+
+                logTest('Test 7: Empty Circuit', valid,
+                       valid ? 'Successfully parsed empty circuit' : 'Empty circuit parsing failed');
+            } else {
+                logTest('Test 7: Empty Circuit', false, 'Parse failed: ' + result.error);
+            }
+        }
+
+        // Test 8: Large Circuit
+        function testLargeCircuit() {
+            const dsl = `
+circuit LargeCircuit {
+    components {
+        alu: 74LS181_8bit at (300, 200)
+        counter1: 74LS163_8bit at (100, 100)
+        counter2: 74LS191_8bit at (500, 100)
+        sw0: Switch at (50, 150)
+        sw1: Switch at (50, 180)
+        sw2: Switch at (50, 210)
+        led0: Led at (650, 150)
+        led1: Led at (650, 180)
+        led2: Led at (650, 210)
+        label1: TextLabel at (250, 50) with text="Input Section"
+        label2: TextLabel at (550, 50) with text="Output Section"
+        clock: ContinuousPulse at (50, 250)
+    }
+
+    connections {
+        clock.pin0 -> counter1.CP
+        clock.pin0 -> counter2.CP
+        sw0.pin0 -> alu.A0
+        sw1.pin0 -> alu.B0
+        counter1.QA -> alu.A1
+        counter2.QA -> alu.B1
+        alu.F0 -> led0.pin0
+        alu.F1 -> led1.pin0
+        alu.F2 -> led2.pin0
+    }
+
+    configuration {
+        linecolor: "#00BFFF"
+    }
+}`;
+
+            const result = CircuitDSL.parse(dsl);
+
+            if (result.success) {
+                const valid = result.ast.components.length === 12 &&
+                             result.ast.connections.length === 9;
+
+                logTest('Test 8: Large Circuit', valid,
+                       valid ? 'Successfully parsed large circuit with ' +
+                              result.ast.components.length + ' components and ' +
+                              result.ast.connections.length + ' connections' : 'Large circuit parsing failed');
+            } else {
+                logTest('Test 8: Large Circuit', false, 'Parse failed: ' + result.error);
+            }
+        }
+
+        // Test 9: Real-world Example
+        function testRealWorldExample() {
+            const dsl = `
+circuit ALU_8bit_Demo {
+    components {
+        alu: 74LS181_8bit at (350, 200)
+        sw_a0: Switch at (100, 150)
+        sw_a1: Switch at (100, 180)
+        sw_b0: Switch at (100, 280)
+        led_f0: Led at (600, 150)
+        led_f1: Led at (600, 180)
+        label_title: TextLabel at (300, 80) with text="8-Bit ALU Demonstration"
+    }
+
+    connections {
+        sw_a0.pin0 -> alu.A0
+        sw_a1.pin0 -> alu.A1
+        sw_b0.pin0 -> alu.B0
+        alu.F0 -> led_f0.pin0
+        alu.F1 -> led_f1.pin0
+    }
+
+    configuration {
+        linecolor: "#00BFFF"
+    }
+}`;
+
+            const result = CircuitDSL.parse(dsl);
+
+            if (result.success) {
+                const hasConfig = result.ast.configuration &&
+                                 result.ast.configuration.linecolor === '#00BFFF';
+                const valid = result.ast.components.length === 7 &&
+                             result.ast.connections.length === 5 &&
+                             hasConfig;
+
+                logTest('Test 9: Real-world Example', valid,
+                       valid ? 'Successfully parsed realistic ALU demo circuit' : 'Real-world example parsing failed',
+                       {
+                           components: result.ast.components.length,
+                           connections: result.ast.connections.length,
+                           configuration: result.ast.configuration
+                       });
+            } else {
+                logTest('Test 9: Real-world Example', false, 'Parse failed: ' + result.error);
+            }
+        }
+
+        // Run all tests
+        function runAllTests() {
+            document.getElementById('test-results').innerHTML = '';
+
+            console.log('Starting AI Bridge Layer tests...');
+
+            testBasicParsing();
+            testComplexComponent();
+            testMultipleConnections();
+            testCommentsAndWhitespace();
+            testAllComponentTypes();
+            testErrorHandling();
+            testEmptyCircuit();
+            testLargeCircuit();
+            testRealWorldExample();
+
+            console.log('All tests completed.');
+
+            const summaryDiv = document.createElement('div');
+            summaryDiv.className = 'test-section';
+            summaryDiv.innerHTML = '<h2>Test Summary</h2><p>All tests completed. Check results above.</p>';
+            document.getElementById('test-results').appendChild(summaryDiv);
+        }
+
+        // Auto-run tests on page load
+        window.onload = runAllTests;
+    </script>
+</body>
+</html>
