@@ -3,25 +3,25 @@ Duosi Principles of Computer Composition Virtual Experiment System ,DS-VLAB v1.0
 Copyright(C)2013 ZHANG Wen-fen, Email: yydzhwf@163.com  Address: Xiangnan University, Chenzhou Hunan, China
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or any later version.
 
-��˼��������ԭ����������ʵ��ϵͳ, DS-VLAB v1.0 ��2013�꿪����2016�귢����
-��Ȩ����(C) �����, ��������: yydzhwf@163.com
-������Ϊ���������������������������������������GNU GENERAL PUBLIC LICENSE���Ա������ٴη�����/���޸ġ�
+湘思微机原理仿真实验系统, DS-VLAB v1.0 于2013年开发，2016年发布。
+版权所有(C) 张雯雰, 联系邮箱: yydzhwf@163.com
+本程序为自由软件，您可以在遵守 GNU GENERAL PUBLIC LICENSE 的前提下再次发布和/或修改。
 
-���ߣ�����ѧԺ������ͨ�Ź���ѧԺ�������ʦ
+作者：湘南学院计算机系张雯雰，湘南学院电子信息工程师
 
-��˼��������ԭ����������ʵ��ϵͳ, DS-VLAB v1.2 ��2021��5���޸ģ���V1.0�汾�����Ͻ�VML��ΪSVG��
+湘思微机原理仿真实验系统, DS-VLAB v1.2 于2021年5月修改，在V1.0版本基础上将VML改为SVG。
 */
 
 
 function Circuit() {
-    this.componentAll = [];  //�ѻ�����ʵ�������б�(��������ɾ���ģ�
-    this.count = 0;   //����������������ɾ����������������������id
+    this.componentAll = [];  //已绘制的实验器件列表(不包括已删除的)
+    this.count = 0;   //给各组件编号（已删除的组件编号不回收，组件的id
     this.linecolor = "#00BFFF";  // Changed from yellow to DeepSkyBlue for better visibility
-    var targetPin = null;  //��������ʱ��Ŀ������
+    var targetPin = null;  //拖拽连线时的目标引脚
     var _this = this;
     var  arrowCount=0;
 
-    //�ڸ���div��parentId����ָ��λ�ã�offsetX, offsetY��������ʵ��������componentName��
+    //在父级div（parentId）的指定位置（offsetX, offsetY）添加实验器件（componentName）
     this.addComponent = function (parentId, componentName, offsetX, offsetY, componentId) {
         var component = new window[componentName]();
         if (componentId == null) {
@@ -64,7 +64,7 @@ function Circuit() {
         }
         ;
 
-        //������������
+        //绘制引脚层
         var pinDiv, pn, pinFun;
         for (var i = 0; i < component.pinName.length; i++) {
             pinDiv = document.createElement("div");
@@ -75,7 +75,7 @@ function Circuit() {
                 pinDiv.style.width = component.pinWidth + 2 + "px";
                 pinDiv.style.height = component.pinHeight + "px";
             } else {
-                pinDiv.style.width = component.pinWidth + 6 + "px"; //�����ż䲿���ص����ֺÿ�Щ
+                pinDiv.style.width = component.pinWidth + 6 + "px"; //引脚间隔部分宽些，留字好看些
                 pinDiv.style.height = component.pinHeight + 2 + "px";
             }
             ;
@@ -100,7 +100,7 @@ function Circuit() {
             }
             ;
             pinFun = component.pinFunction[i];
-            if (pinFun == 10 || pinFun == 0) {   //�������������
+            if (pinFun == 10 || pinFun == 0) {   //仅进入输入引脚
                 pinDiv.style.color = "#003C9D";
                 $(pinDiv).bind("mousedown", doNone);
                 $(pinDiv).bind("mouseenter", function () {
@@ -111,12 +111,12 @@ function Circuit() {
                 });
             }
             ;
-            if (pinFun == 1) {   //������������
+            if (pinFun == 1) {   //从输出引脚输出
                 pinDiv.style.color = "green";
                 $(pinDiv).bind("mousedown", lineDrag);
             }
             ;
-            if (pinFun == 11) {   //���������/�������
+            if (pinFun == 11) {   //双向引脚/三态门
                 pinDiv.style.color = "#b200ff";
                 $(pinDiv).bind("mouseenter", function () {
                     targetPin = this;
@@ -127,14 +127,14 @@ function Circuit() {
                 $(pinDiv).bind("mousedown", lineDrag);
             }
             ;
-            if (pinFun >= 2) {   //�������������
+            if (pinFun >= 2) {   //电源接地引脚
                 $(pinDiv).bind("mousedown", doNone);
             }
             ;
 
             pinDiv.onselectstart = function () {
                 return false;
-            };//����div�е����ֱ�ѡ��
+            };//禁止div中的文字被选中
 
             $("#" + compDiv.id).append(pinDiv);
         }
@@ -174,7 +174,7 @@ function Circuit() {
     };
 
 
-    //����һ��������
+    //绘制一根连接线
     this.lineCreate = function (paintDiv, fromX, fromY, toX, toY) {
         console.log("========" + fromX + "  " + toX)
         var newLine = document.createElement("div");
@@ -223,7 +223,7 @@ function Circuit() {
         return p;
     };
 
-    //����������ʱ������ʼ����Ŀ����϶��Ĺ����У��ߵı仯
+    //拖动连线时，从开始到目标拖动的过程中，线的变化
     function lineChange(line, fromX, fromY, toX, toY) {
         var p1X, p1Y, p2X, p2Y;
         if (Math.abs(fromX - toX) > Math.abs(fromY - toY)) {
@@ -254,7 +254,7 @@ function Circuit() {
         $(line).attr("d", path);
      };
 
-    //����������ʱ����굽��Ŀ�����ź󣬵�������λ�����ߣ��϶�����ʱ������������
+    //拖拽连线时，连接到目标引脚后，更新连线位置和线型，拖动器件时，连线跟随运动
     this.lineAdjust = function (line, startPin, endPin) {
         var sX, sY, eX, eY;
         var st = startPin.offsetTop;
@@ -357,9 +357,9 @@ function Circuit() {
     };
 
 
-    //������ŵ�����¼�
+    //输出引脚的拖动事件
     function lineDrag(a) {
-        window.event.cancelBubble = true;  //��ֹ�¼�ð�ݵ���һ��
+        window.event.cancelBubble = true;  //阻止事件冒泡到上一层
         if (!a) a = window.event;
         var d = document;
         var sTop = Math.max(d.body.scrollTop, d.documentElement.scrollTop);
@@ -373,15 +373,15 @@ function Circuit() {
             if (!a) a = window.event;
             var sTop = Math.max(d.body.scrollTop, d.documentElement.scrollTop);
             var sLeft = Math.max(d.body.scrollLeft, d.documentElement.scrollLeft);
-            if (targetPin == null) {  //��껹û����Ŀ���ʱ
+            if (targetPin == null) {  //还没有进入目标引脚时
                 lineChange(line, ox, oy, a.clientX + sLeft, a.clientY + sTop);
-            } else { //����ѽ���Ŀ������ʱ
+            } else { //已经进入目标引脚后时
                 _this.lineAdjust(line, originPin, targetPin);
             }
         }
 
         d.onmouseup = function () {
-            if (targetPin == null) {//���û�н����κ�Ŀ������                   ���޸ģ���Ӧ�ü��Ŀ�������Ƿ��Ѿ���������
+            if (targetPin == null) {//如果没有进入任何目标引脚后 ...需修改，应该检查目标引脚是否已经有连接线
                 var a = $(line).parent()[0];
                 $(a).parent()[0].remove(true);
             } else {
@@ -396,12 +396,12 @@ function Circuit() {
     };
 
 
-    //�������ź��������ŵ�mousedown�¼�
+    //电源接地和输出引脚的mousedown事件
     function doNone(a) {
-        window.event.cancelBubble = true;  //��ֹ�¼�ð�ݵ���һ��
+        window.event.cancelBubble = true;  //阻止事件冒泡到上一层
     };
 
-    //����id��componentAll���ҵ�ƥ�������
+    //根据id在componentAll中找到匹配的组件
     this.findById = function (Id) {
         for (var i = 0; i < _this.componentAll.length; i++) {
             if (_this.componentAll[i].id == Id)
@@ -411,7 +411,7 @@ function Circuit() {
         return 0;
     };
 
-    //����id��componentAll���ҵ�ƥ���������ɾ��
+    //根据id在componentAll中找到匹配的组件并删除
     function deleteById(Id) {
         for (var i = 0; i < _this.componentAll.length; i++) {
             if (_this.componentAll[i].id == Id) {
@@ -426,13 +426,13 @@ function Circuit() {
     };
 
 
-    //����������Ϣ���浽����������,����line.id
+    //将连线信息保存到两个引脚，返回line.id
     this.addLineToComponent = function (line, startPin, endPin) {
         var sPId, ePId, sCId, sPNo, eCId, ePNo, p;
         sPId = startPin.id;
         p = sPId.indexOf("Pin");
-        sCId = sPId.substring(0, p);//��ȡ��ʼ���ŵ�����ID
-        sPNo = sPId.substring(p + 3);//��ȡ��ʼ���ŵı��
+        sCId = sPId.substring(0, p);//获取开始引脚的组件ID
+        sPNo = sPId.substring(p + 3);//获取开始引脚的编号
         ePId = endPin.id;
         p = ePId.indexOf("Pin");
         eCId = ePId.substring(0, p);
@@ -444,7 +444,7 @@ function Circuit() {
         line.id = sPId + "To" + ePId;
     };
 
-    //�϶�����cʱ������������������
+    //拖动组件c时，更新相关的连线
     this.lineReplace = function (c) {
         var comp = _this.findById(c.id);
         var i, j, l, s, e;
@@ -461,7 +461,7 @@ function Circuit() {
     };
 
 
-    //ɾ��������
+    //删除连接线
     function lineDelete(line) {
         var lId, sPId, ePId, sCId, sPNo, eCId, ePNo, p, i;
         var aline = $(line).find("path")[1];
@@ -478,8 +478,8 @@ function Circuit() {
         sPId = lId.substring(0, p);
         ePId = lId.substring(p + 2);
         p = sPId.indexOf("Pin");
-        sCId = sPId.substring(0, p);//��ȡ��ʼ���ŵ�����ID
-        sPNo = sPId.substring(p + 3);//��ȡ��ʼ���ŵı��
+        sCId = sPId.substring(0, p);//获取开始引脚的组件ID
+        sPNo = sPId.substring(p + 3);//获取开始引脚的编号
         p = ePId.indexOf("Pin");
         eCId = ePId.substring(0, p);
         ePNo = ePId.substring(p + 3);
@@ -504,11 +504,11 @@ function Circuit() {
         $(line).remove();
     };
 
-    //�һ�ɾ�������ߵ�����¼�
+    //右键删除连接线的事件
     function deleteL(a) {
         if (!a) a = window.event;
         if (a.button == 2) {
-            var r = confirm("�Ƿ�Ҫɾ�������ߣ�");
+            var r = confirm("是否要删除这根线？");
             if (r == true) {
                 lineDelete(this);
             }
@@ -518,7 +518,7 @@ function Circuit() {
     };
 
 
-    //ɾ�������Լ�����������������������
+    //删除组件及其关联的所有连接线
     function componentDelete(c) {
         var i, j;
         var comp = _this.findById(c.id);
@@ -534,11 +534,11 @@ function Circuit() {
 
     };
 
-    //�һ�ɾ���������������ߵ�����¼�
+    //右键删除组件及其连线的事件
     function deleteC(a) {
         if (!a) a = window.event;
         if (a.button == 2) {
-            var r = confirm("�Ƿ�Ҫɾ��Ԫ�������������ߣ�");
+            var r = confirm("是否要删除元件及其连接线？");
             if (r == true) {
                 componentDelete(this);
             }
@@ -548,7 +548,7 @@ function Circuit() {
     };
 
 
-    //˫��������ʾ�������ŵ�ֵ
+    //双击组件，显示各个引脚的值
     function showPinValue() {
         var s = "";
         var comp = _this.findById(this.id);
@@ -605,7 +605,7 @@ function Circuit() {
     };
 
 
-    /*���ص���굥���¼�*/
+    /*开关按钮的点击事件*/
     function switchClick(a) {
         if (!a) a = window.event;
         if (a.button == 2) {
@@ -650,7 +650,7 @@ function Circuit() {
         };
     };
 
-    /*��������������굥���¼�*/
+    /*单脉冲按钮的点击事件*/
     function singlePulseClick(a) {
         if (!a) a = window.event;
         if (a.button == 2) {
@@ -717,8 +717,8 @@ function Circuit() {
         }
         ;
 
-        this.count = 0;   //����������������ɾ����������������������id
-        var targetPin = null;  //��������ʱ��Ŀ������
+        this.count = 0;   //给各组件编号（已删除的组件编号不回收，组件的id
+        var targetPin = null;  //拖拽连线时的目标引脚
         return true;
     };
 

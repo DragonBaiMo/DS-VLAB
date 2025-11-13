@@ -2,8 +2,9 @@
 <html>
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=9">
+    <meta charset="UTF-8">
 
-    <title>��˼����ԭ������ʵ����</title>
+    <title>湘思微机原理仿真实验平台</title>
     <link rel="shortcut icon" href="./img/dolphin.png" type="image/x-icon"/>
     <link rel="stylesheet" href="./css/flowchart.css">
     <link rel="stylesheet" href="./css/menu.css">
@@ -65,7 +66,7 @@
                 return false;
             };
 
-            //��ʼ���˵����������͹�����
+            //初始化菜单、工具栏和工具箱
             menuInit();
             toolbarInit();
             mytoolbox = new toolbox();
@@ -81,46 +82,46 @@
 
 <div id="menu">
     <ul id="navmenu">
-        <li><a href="#">�ļ�</a>
+        <li><a href="#">文件</a>
             <ul>
-                <li><a href="#" id="newfile">�½�</a></li>
-                <li><a href="#" id="opener">��</a></li>
-                <li><a href="#" id="saver">����</a></li>
+                <li><a href="#" id="newfile">新建</a></li>
+                <li><a href="#" id="opener">打开</a></li>
+                <li><a href="#" id="saver">保存</a></li>
             </ul>
         </li>
-        <li><a href="#">����</a>
+        <li><a href="#">电源</a>
             <ul>
-                <li><a href="#" id="poweron">����Դ</a></li>
-                <li><a href="#" id="poweroff">�ص�Դ</a></li>
-                <li><a href="#" id="powerreset">����</a></li>
+                <li><a href="#" id="poweron">接通电源</a></li>
+                <li><a href="#" id="poweroff">关断电源</a></li>
+                <li><a href="#" id="powerreset">复位</a></li>
             </ul>
         </li>
-        <li><a href="#">����</a>
+        <li><a href="#">设置</a>
             <ul>
-                <li><a href="#" id="memoryrw">�洢��оƬ��д</a></li>
-                <li><a href="#" id="colorst">��������ɫ����</a></li>
-                <li><a href="#" id="clockcycle">ʱ����������</a></li>
+                <li><a href="#" id="memoryrw">存储器芯片读写</a></li>
+                <li><a href="#" id="colorst">连线颜色设置</a></li>
+                <li><a href="#" id="clockcycle">时钟周期设置</a></li>
             </ul>
         </li>
-        <li><a href="#">ʵ��ָ��</a>
+        <li><a href="#">实验指导</a>
             <ul>
-                <li><a href="#" onclick="window.open('experimentguidance.html')">ʵ��ָ����</a>
+                <li><a href="#" onclick="window.open('experimentguidance.html')">实验指导书</a>
                 </li>
-                <li><a href="#" onclick="window.open('chipdatasheet.html')">ʵ����������</a>
+                <li><a href="#" onclick="window.open('chipdatasheet.html')">实验器件手册</a>
                 </li>
             </ul>
         </li>
-        <li><a href="#">AI����</a>
+        <li><a href="#">AI桥接</a>
             <ul>
-                <li><a href="#" id="ai-dsl-import">DSL����</a></li>
-                <li><a href="#" id="ai-dsl-export">DSL����</a></li>
-                <li><a href="#" id="ai-examples">ʾ������</a></li>
+                <li><a href="#" id="ai-dsl-import">DSL导入</a></li>
+                <li><a href="#" id="ai-dsl-export">DSL导出</a></li>
+                <li><a href="#" id="ai-examples">示例电路</a></li>
             </ul>
         </li>
-        <li><a href="#">����</a>
+        <li><a href="#">帮助</a>
             <ul>
-                <li><a href="./files/help.pdf" target="_blank">�鿴����</a></li>
-                <li><a href="#" id="about">��������ʵ����</a></li>
+                <li><a href="./files/help.pdf" target="_blank">查看帮助</a></li>
+                <li><a href="#" id="about">关于本实验平台</a></li>
             </ul>
         </li>
     </ul>
@@ -134,10 +135,10 @@
 </div>
 
 <div id="toolbox" class="toolbox">
-    <h1 class="ui-widget-header">ʵ���豸�б�</h1>
+    <h1 class="ui-widget-header">实验设备列表</h1>
     <div id="accordion-resizer" class="ui-widget-content">
         <div id="accordion">
-            <h3>���ֹ�������</h3>
+            <h3>基本数字功能器件</h3>
             <div>
                 <ul>
                     <li class="tooltip">74LS181</li>
@@ -154,7 +155,7 @@
                     <li class="tooltip">74LS191_8bit</li>
                 </ul>
             </div>
-            <h3>�߼��ŵ�·</h3>
+            <h3>逻辑门电路</h3>
             <div>
                 <ul>
                     <li class="tooltip">ANDgate</li>
@@ -165,7 +166,7 @@
                     <li class="tooltip">Triplegate</li>
                 </ul>
             </div>
-            <h3>����Ԫ��</h3>
+            <h3>基本元件</h3>
             <div>
                 <ul>
                     <li class="tooltip">Switch</li>
@@ -174,7 +175,7 @@
                     <li class="tooltip">ContinuousPulse</li>
                 </ul>
             </div>
-            <h3>�������</h3>
+            <h3>存储器件</h3>
             <div>
                 <ul>
                     <li class="tooltip">EPROM2716C3</li>
@@ -183,7 +184,7 @@
                     <li class="tooltip">BUS</li>
                 </ul>
             </div>
-            <h3>��ע����</h3>
+            <h3>注释工具</h3>
             <div>
                 <ul>
                     <li class="tooltip">TextLabel</li>
@@ -210,23 +211,23 @@
                 <DIV id=c1><img src="./img/dolphin150.png" height="80" width="80"/></DIV>
             </TD>
             <TD>
-                <DIV id=c2><p style="line-height:0.5;font-size:18px">��˼��������ԭ����������ʵ��ϵͳ</p>
+                <DIV id=c2><p style="line-height:0.5;font-size:18px">湘思微机原理仿真实验系统</p>
                     <p style="line-height:0.5;font-size:18px">DS-VLAB v1.2</p></DIV>
             </TD>
             <TD>
     </table>
-    <p style="line-height:0">Copyright(C)2013 ZHANG Wen-fen ����� </p>
-    <p style="line-height:1.2">���ߣ�����ѧԺ��������˹�����ѧԺ�������ʦ</p>
-    <p style="line-height:1.2">Email��3541992325@qq.com</p>
-    <p>������Ϊ���������������������������������������GNU GENERAL PUBLIC LICENSE���Ա������ٴη�����/���޸ġ�</p>
+    <p style="line-height:0">Copyright(C)2013-2025 ZHANG Wen-fen 版权所有 </p>
+    <p style="line-height:1.2">作者：湘南学院计算机系张雯雰</p>
+    <p style="line-height:1.2">Email：3541992325@qq.com</p>
+    <p>本程序为自由软件，您可以在遵守 GNU GENERAL PUBLIC LICENSE 的前提下再次发布和/或修改。</p>
     <p>This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
         License as published by the Free Software Foundation.</p>
 </div>
 
-<div id="mreadwritedlg" title="�洢��оƬ��д" style="display: none">
+<div id="mreadwritedlg" title="存储器芯片读写" style="display: none">
     <p>&nbsp;</p>
     <p style="height: 27px; color:#142256">
-        ��ѡ������д�Ĵ洢��оƬ��
+        请选择需要读写的存储器芯片：
         <select id="Select1" name="D1" onchange="mread()">
             <option></option>
         </select>
