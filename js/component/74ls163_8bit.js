@@ -153,7 +153,8 @@ Compo74LS163_8bit.prototype.work = function () {
                 this.pinValue[19] * 16 + this.pinValue[20] * 32 +
                 this.pinValue[21] * 64 + this.pinValue[22] * 128;
 
-        this.pinValue[23] = (s == 255) ? 1 : 0;  // RCO
+        // RCO = 1 when all outputs are 1 AND ENT = 1
+        this.pinValue[23] = (s == 255 && this.pinValue[11] == 1) ? 1 : 0;  // RCO
         this.operationType = 0;
         return;
     }
@@ -176,7 +177,8 @@ Compo74LS163_8bit.prototype.work = function () {
         this.pinValue[16] = Math.floor((s % 4) / 2);
         this.pinValue[15] = Math.floor(s % 2);
 
-        this.pinValue[23] = (s == 255) ? 1 : 0;  // RCO
+        // RCO = 1 when all outputs are 1 AND ENT = 1
+        this.pinValue[23] = (s == 255 && this.pinValue[11] == 1) ? 1 : 0;  // RCO
     }
     this.operationType = 0;
 };

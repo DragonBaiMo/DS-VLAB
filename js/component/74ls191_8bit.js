@@ -136,8 +136,14 @@ Compo74LS191_8bit.prototype.work = function () {
                 this.pinValue[18] * 16 + this.pinValue[19] * 32 +
                 this.pinValue[20] * 64 + this.pinValue[21] * 128;
 
-        // Set status flags
-        this.pinValue[22] = (s == 255 || s == 0) ? 1 : 0;  // MAX/MIN
+        // Set status flags based on D/U direction
+        // D/U=0 (count up): MAX/MIN=1 when s=255
+        // D/U=1 (count down): MAX/MIN=1 when s=0
+        if (this.pinValue[0] == 0) {
+            this.pinValue[22] = (s == 255) ? 1 : 0;  // MAX/MIN
+        } else {
+            this.pinValue[22] = (s == 0) ? 1 : 0;    // MAX/MIN
+        }
         this.pinValue[23] = 0;  // RCO
         this.operationType = 0;
         return;

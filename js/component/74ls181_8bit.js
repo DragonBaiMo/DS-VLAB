@@ -87,8 +87,9 @@ Compo74LS181_8bit.prototype.input = function (pinNo, value) {
 };
 
 // 8-bit ALU computation logic
+// Implements two cascaded 4-bit 74LS181 units
 Compo74LS181_8bit.prototype.work = function () {
-    var A = [], B = [], F = [];
+    var A = [], B = [];
     var S = [], M, Cn;
 
     // Extract inputs
@@ -104,42 +105,82 @@ Compo74LS181_8bit.prototype.work = function () {
     M = this.pinValue[20];
     Cn = this.pinValue[21];
 
-    // Compute 8-bit ALU operation
-    // This implements cascaded 4-bit ALU logic
-    var x = [], y = [], c = [];
+    // Process lower 4 bits (bits 0-3) - First 74LS181
+    var x0, x1, x2, x3, y0, y1, y2, y3, c0, c1, c2, c3;
 
-    for (var i = 0; i < 8; i++) {
-        x[i] = Number(!((S[3] & S[2] & A[i]) | (S[3] & !S[2] & A[i])));
-        y[i] = Number(!(A[i] | (S[2] & S[0]) | (S[1] & !S[2])));
-    }
+    x0 = Number(!((S[3] & S[2] & A[0]) | (S[3] & !S[2] & B[0])));
+    x1 = Number(!((S[3] & S[2] & A[1]) | (S[3] & !S[2] & B[1])));
+    x2 = Number(!((S[3] & S[2] & A[2]) | (S[3] & !S[2] & B[2])));
+    x3 = Number(!((S[3] & S[2] & A[3]) | (S[3] & !S[2] & B[3])));
 
-    // Carry chain
-    c[0] = Number(!(Cn & !M));
-    for (var i = 1; i < 8; i++) {
-        c[i] = Number(!(!M & (y[i-1] | (x[i-1] & c[i-1]))));
-    }
+    y0 = Number(!(B[0] | (S[2] & S[0]) | (S[1] & !S[2])));
+    y1 = Number(!(B[1] | (S[2] & S[0]) | (S[1] & !S[2])));
+    y2 = Number(!(B[2] | (S[2] & S[0]) | (S[1] & !S[2])));
+    y3 = Number(!(B[3] | (S[2] & S[0]) | (S[1] & !S[2])));
 
-    // Compute outputs
-    for (var i = 0; i < 8; i++) {
-        F[i] = Number(c[i] ^ x[i] ^ y[i]);
-        this.pinValue[24 + i] = F[i];  // F0-F7
-    }
+    c0 = Number(!(Cn & !M));
+    c1 = Number(!((x0 & Cn | y0) & !M));
+    c2 = Number(!(!M & (y1 | (y0 & x1) | (x0 & x1 & Cn))));
+    c3 = Number(!(!M & (y2 | (y1 & x2) | (y0 & x1 & x2) | (x0 & x1 & x2 & Cn))));
 
-    // Status outputs
+    // Lower 4-bit outputs
+    this.pinValue[24] = Number(c0 ^ x0 ^ y0);  // F0
+    this.pinValue[25] = Number(c1 ^ x1 ^ y1);  // F1
+    this.pinValue[26] = Number(c2 ^ x2 ^ y2);  // F2
+    this.pinValue[27] = Number(c3 ^ x3 ^ y3);  // F3
+
+    // Calculate Cn+4 for lower unit (carry into upper unit)
+    var P_low = x0 & x1 & x2 & x3;
+    var G_low = y3 | (y2 & x3) | (y1 & x2 & x3) | (y0 & x1 & x2 & x3);
+    var Cn4 = Number(!(G_low & (!Cn | P_low)));
+
+    // Process upper 4 bits (bits 4-7) - Second 74LS181
+    var x4, x5, x6, x7, y4, y5, y6, y7, c4, c5, c6, c7;
+
+    x4 = Number(!((S[3] & S[2] & A[4]) | (S[3] & !S[2] & B[4])));
+    x5 = Number(!((S[3] & S[2] & A[5]) | (S[3] & !S[2] & B[5])));
+    x6 = Number(!((S[3] & S[2] & A[6]) | (S[3] & !S[2] & B[6])));
+    x7 = Number(!((S[3] & S[2] & A[7]) | (S[3] & !S[2] & B[7])));
+
+    y4 = Number(!(B[4] | (S[2] & S[0]) | (S[1] & !S[2])));
+    y5 = Number(!(B[5] | (S[2] & S[0]) | (S[1] & !S[2])));
+    y6 = Number(!(B[6] | (S[2] & S[0]) | (S[1] & !S[2])));
+    y7 = Number(!(B[7] | (S[2] & S[0]) | (S[1] & !S[2])));
+
+    c4 = Number(!(Cn4 & !M));
+    c5 = Number(!((x4 & Cn4 | y4) & !M));
+    c6 = Number(!(!M & (y5 | (y4 & x5) | (x4 & x5 & Cn4))));
+    c7 = Number(!(!M & (y6 | (y5 & x6) | (y4 & x5 & x6) | (x4 & x5 & x6 & Cn4))));
+
+    // Upper 4-bit outputs
+    this.pinValue[28] = Number(c4 ^ x4 ^ y4);  // F4
+    this.pinValue[29] = Number(c5 ^ x5 ^ y5);  // F5
+    this.pinValue[30] = Number(c6 ^ x6 ^ y6);  // F6
+    this.pinValue[31] = Number(c7 ^ x7 ^ y7);  // F7
+
+    // A=B output: check if all F outputs match all inputs
     var allEqual = 1;
     for (var i = 0; i < 8; i++) {
-        if (F[i] != (A[i] & B[i])) allEqual = 0;
+        if (this.pinValue[24+i] != (A[i] ^ B[i])) {
+            allEqual = 0;
+            break;
+        }
     }
     this.pinValue[32] = allEqual;  // A=B
 
-    var P = 1, G = 1;
-    for (var i = 0; i < 8; i++) {
-        P = P & x[i];
-        G = G & (y[i] | x[i]);
-    }
-    this.pinValue[33] = Number(!P);        // P
-    this.pinValue[34] = Number(!G);        // G
-    this.pinValue[35] = c[7];              // Cn+8
+    // P (Propagate) and G (Generate) for entire 8-bit
+    var P_high = x4 & x5 & x6 & x7;
+    var P = Number(!(P_low & P_high));
+
+    var G_high = y7 | (y6 & x7) | (y5 & x6 & x7) | (y4 & x5 & x6 & x7);
+    var G = Number(!(G_low & (G_high | P_high)));
+
+    this.pinValue[33] = P;     // P
+    this.pinValue[34] = G;     // G
+
+    // Cn+8 calculation
+    var Cn8 = Number(!(G_high & (!Cn4 | P_high)));
+    this.pinValue[35] = Cn8;   // Cn+8
 };
 
 Compo74LS181_8bit.prototype.reset = function () {
