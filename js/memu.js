@@ -12,19 +12,8 @@ This program is free software: you can redistribute it and/or modify it under th
 
 
 
-function menuInit () {
-    navHover = function () {
-        var lis = document.getElementById("navmenu").getElementsByTagName("LI");
-        for (var i = 0; i < lis.length; i++) {
-            lis[i].onmouseover = function () {
-                this.className += " iehover";
-            }
-            lis[i].onmouseout = function () {
-                this.className = this.className.replace(new RegExp(" iehover\\b"), "");
-            }
-        }
-    }
-    if (window.attachEvent) window.attachEvent("onload", navHover);
+function menuInit() {
+    // Modern browsers handle :hover in CSS, no need for JS-based hover for IE6
 };
 
 
@@ -49,52 +38,52 @@ $(function () {
         };
     });
 
-      $("#memoryrw").click(function () {
-            var texta = document.getElementById("TextArea1");
-            texta.value ="";
-            select_list();
-            $("#mreadwritedlg").dialog({
-                modal: true,
-                height: 550,
-                width: 600,
-                buttons: [
-                  {
-                        text: "Write",
-                        click: function () {
-                            mwrite();
-                        }
-                    } ,                  
-                  {
-                        text: "Close",
-                        click: function () {
-                            $(this).dialog("close");
-                        }
+    $("#memoryrw").click(function () {
+        var texta = document.getElementById("TextArea1");
+        texta.value = "";
+        select_list();
+        $("#mreadwritedlg").dialog({
+            modal: true,
+            height: 550,
+            width: 600,
+            buttons: [
+                {
+                    text: "Write",
+                    click: function () {
+                        mwrite();
                     }
-                ]
-            });
+                },
+                {
+                    text: "Close",
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            ]
         });
+    });
 
-        $("#colorst").click(function () {
-            $("#colordlg").dialog({
-                modal: true,
-                height: 440,
-                width: 550,
-                buttons: [
-                   {
-                        text: "Apply",
-                        click: function () {
-                              selectcolor();
-                        }
-                    },
-                    {
-                        text: "Close",
-                        click: function () {
-                            $(this).dialog("close");
-                        }
+    $("#colorst").click(function () {
+        $("#colordlg").dialog({
+            modal: true,
+            height: 440,
+            width: 550,
+            buttons: [
+                {
+                    text: "Apply",
+                    click: function () {
+                        selectcolor();
                     }
-                ]
-            });
+                },
+                {
+                    text: "Close",
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            ]
         });
+    });
 
 
     $("#clockcycle").click(function () {
@@ -127,19 +116,38 @@ $(function () {
     });
 
     $("#aboutdlg").dialog({
-         autoOpen: false,
-         modal: true,
-         height: 340,
-         width: 460,
+        autoOpen: false,
+        modal: true,
+        height: 340,
+        width: 460,
     });
     $("#about").click(function () {
-         $( "#aboutdlg" ).dialog( "open" );
+        $("#aboutdlg").dialog("open");
         $("button").blur();
     });
 
     // AI Bridge Layer Menu Items
     $("#ai-dsl-import").click(function () {
-        AIBridge.showEditor(mycircuit);
+        // Create a file input element if it doesn't exist
+        var fileInput = document.getElementById('dsl-file-input');
+        if (!fileInput) {
+            fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.id = 'dsl-file-input';
+            fileInput.style.display = 'none';
+            fileInput.accept = '.dsl,.txt';
+            document.body.appendChild(fileInput);
+
+            // Handle file selection
+            fileInput.addEventListener('change', function (e) {
+                AIBridge.importFile(mycircuit, e.target);
+                // Reset the input value so the same file can be selected again
+                e.target.value = '';
+            });
+        }
+
+        // Directly open file picker to import DSL file
+        fileInput.click();
     });
 
     $("#ai-dsl-export").click(function () {
@@ -172,75 +180,75 @@ $(function () {
 
 var lcolor;
 function selectcolor() {
-        mycircuit.linecolor = lcolor;
-        mycircuit.linecolorchange(lcolor);
-        ;
- };
+    mycircuit.linecolor = lcolor;
+    mycircuit.linecolorchange(lcolor);
+    ;
+};
 
- function select_list() {
-        $("#Select1").html("<option>请选择芯片</option>");
-        var sel_num = 3;
-        var cAll = mycircuit.componentAll;
-        var sel_list = document.getElementById("Select1");
-        for (var i = 0; i < cAll.length; i++) {
-            if (cAll[i].name == "RAM6116" || cAll[i].name == "EPROM2716C3" || cAll[i].name == "EPROM2716C4") {
-                var option = window.document.createElement("option");
-                sel_list.appendChild(option);
-                option.text = cAll[i].name + " " + cAll[i].id;
-                option.value = cAll[i].id;
-            } ;
-        } ;
-    };
-
-    function mread() {
-        var sel_list = document.getElementById("Select1");
-        var texta = document.getElementById("TextArea1");
-        var cAll = mycircuit.componentAll;
-        var text = "";
-        var c, i, m, n;
-        for (i = 0; i < cAll.length; i++) {
-            c = cAll[i];
-            if (c.id == sel_list.value) {
-                for (m = 0; m < c.memory.length; m++) {
-                    for (n = c.memory[m].length - 1; n >= 0; n--) {
-                        text = text + String(c.memory[m][n]);
-                    };
-                    text = text + "\n";
-                };
-                texta.value = text;
-                return;
-            };
+function select_list() {
+    $("#Select1").html("<option>请选择芯片</option>");
+    var sel_num = 3;
+    var cAll = mycircuit.componentAll;
+    var sel_list = document.getElementById("Select1");
+    for (var i = 0; i < cAll.length; i++) {
+        if (cAll[i].name == "RAM6116" || cAll[i].name == "EPROM2716C3" || cAll[i].name == "EPROM2716C4") {
+            var option = window.document.createElement("option");
+            sel_list.appendChild(option);
+            option.text = cAll[i].name + " " + cAll[i].id;
+            option.value = cAll[i].id;
         };
     };
+};
 
-    function mwrite() {
-        var sel_list = document.getElementById("Select1");
-        var texta = document.getElementById("TextArea1");
-        var cAll = mycircuit.componentAll;
-        var text = texta.value;
-        var c, i, m, n;
-        for (i = 0; i < cAll.length; i++) {
-            c = cAll[i];
-            var j = 0;
-            if (c.id == sel_list.value) {
-                for (m = 0; m < c.memory.length; m++) {
-                    for (n = c.memory[m].length - 1; n >= 0; n--) {
-                        if (j > text.length - 1) {
-                            c.memory[m][n] = 0;
-                        } else {
-                            if (!(text[j] == "0" || text[j] == "1")) {
-                                alert("write error! (" + m + "," + n + ")");
-                                return;
-                            };
-                            c.memory[m][n] = Number(text[j]);
+function mread() {
+    var sel_list = document.getElementById("Select1");
+    var texta = document.getElementById("TextArea1");
+    var cAll = mycircuit.componentAll;
+    var text = "";
+    var c, i, m, n;
+    for (i = 0; i < cAll.length; i++) {
+        c = cAll[i];
+        if (c.id == sel_list.value) {
+            for (m = 0; m < c.memory.length; m++) {
+                for (n = c.memory[m].length - 1; n >= 0; n--) {
+                    text = text + String(c.memory[m][n]);
+                };
+                text = text + "\n";
+            };
+            texta.value = text;
+            return;
+        };
+    };
+};
+
+function mwrite() {
+    var sel_list = document.getElementById("Select1");
+    var texta = document.getElementById("TextArea1");
+    var cAll = mycircuit.componentAll;
+    var text = texta.value;
+    var c, i, m, n;
+    for (i = 0; i < cAll.length; i++) {
+        c = cAll[i];
+        var j = 0;
+        if (c.id == sel_list.value) {
+            for (m = 0; m < c.memory.length; m++) {
+                for (n = c.memory[m].length - 1; n >= 0; n--) {
+                    if (j > text.length - 1) {
+                        c.memory[m][n] = 0;
+                    } else {
+                        if (!(text[j] == "0" || text[j] == "1")) {
+                            alert("write error! (" + m + "," + n + ")");
+                            return;
                         };
-                        j = j + 1;
+                        c.memory[m][n] = Number(text[j]);
                     };
                     j = j + 1;
                 };
-                alert('write ok!');
-                return;
+                j = j + 1;
             };
+            alert('write ok!');
+            return;
         };
     };
+};
 

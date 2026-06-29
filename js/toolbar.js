@@ -51,40 +51,10 @@ function toolbarInit() {
 
     $("#new").bind("click", function () {
         //window.location.reload();
-             var r = confirm("是否放弃保存并新建电路？");
-            if (r == true) {
-               mycircuit.deletecircuit();
-            };
-    });
-
-
-    //当鼠标移动到按钮上时，按钮外框变绿色，移开时变白色。
-    $("#tools").mouseenter(function () {
-        $(this).css("border-color", "green");
-    });
-    $("#tools").mouseleave(function () {
-        $(this).css("border-color", "white");
-    });
-
-    $("#reset").mouseenter(function () {
-        $(this).css("border-color", "green");
-    });
-    $("#reset").mouseleave(function () {
-        $(this).css("border-color", "white");
-    });
-
-    $("#power").mouseenter(function () {
-        $(this).css("border-color", "green");
-    });
-    $("#power").mouseleave(function () {
-        $(this).css("border-color", "white");
-    });
-
-    $("#new").mouseenter(function () {
-        $(this).css("border-color", "green");
-    });
-    $("#new").mouseleave(function () {
-        $(this).css("border-color", "white");
+        var r = confirm("是否放弃保存并新建电路？");
+        if (r == true) {
+            mycircuit.deletecircuit();
+        };
     });
 };
 

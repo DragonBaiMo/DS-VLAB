@@ -26,7 +26,7 @@ circuit MyALUCircuit {
 */
 
 // Circuit-DSL Parser
-var CircuitDSL = (function() {
+var CircuitDSL = (function () {
     'use strict';
 
     // Token types
@@ -46,9 +46,17 @@ var CircuitDSL = (function() {
     function tokenize(input) {
         var tokens = [];
         var i = 0;
+        var line = 1;
 
         while (i < input.length) {
             var char = input[i];
+
+            // Handle newlines for line tracking
+            if (char === '\n') {
+                line++;
+                i++;
+                continue;
+            }
 
             // Skip whitespace
             if (/\s/.test(char)) {
@@ -57,7 +65,7 @@ var CircuitDSL = (function() {
             }
 
             // Skip comments (// or #)
-            if (char === '/' && input[i+1] === '/') {
+            if (char === '/' && input[i + 1] === '/') {
                 while (i < input.length && input[i] !== '\n') i++;
                 continue;
             }
@@ -72,15 +80,16 @@ var CircuitDSL = (function() {
                 var str = '';
                 i++; // Skip opening quote
                 while (i < input.length && input[i] !== quote) {
+                    if (input[i] === '\n') line++;
                     str += input[i++];
                 }
                 i++; // Skip closing quote
-                tokens.push({ type: TokenType.STRING, value: str });
+                tokens.push({ type: TokenType.STRING, value: str, line: line });
                 continue;
             }
 
             // Numbers (pure numbers only, without letters)
-            if (/\d/.test(char) || (char === '-' && i + 1 < input.length && /\d/.test(input[i+1]))) {
+            if (/\d/.test(char) || (char === '-' && i + 1 < input.length && /\d/.test(input[i + 1]))) {
                 var num = '';
                 if (char === '-') {
                     num += char;
@@ -93,7 +102,7 @@ var CircuitDSL = (function() {
                 while (i < input.length) {
                     if (/\d/.test(input[i])) {
                         num += input[i++];
-                    } else if (input[i] === '.' && !hasDecimal && i + 1 < input.length && /\d/.test(input[i+1])) {
+                    } else if (input[i] === '.' && !hasDecimal && i + 1 < input.length && /\d/.test(input[i + 1])) {
                         num += input[i++];
                         hasDecimal = true;
                     } else {
@@ -109,9 +118,9 @@ var CircuitDSL = (function() {
                         ident += input[i++];
                     }
                     var type = keywords.indexOf(ident) !== -1 ? TokenType.KEYWORD : TokenType.IDENTIFIER;
-                    tokens.push({ type: type, value: ident });
+                    tokens.push({ type: type, value: ident, line: line });
                 } else {
-                    tokens.push({ type: TokenType.NUMBER, value: parseFloat(num) });
+                    tokens.push({ type: TokenType.NUMBER, value: parseFloat(num), line: line });
                 }
                 continue;
             }
@@ -123,19 +132,19 @@ var CircuitDSL = (function() {
                     ident += input[i++];
                 }
                 var type = keywords.indexOf(ident) !== -1 ? TokenType.KEYWORD : TokenType.IDENTIFIER;
-                tokens.push({ type: type, value: ident });
+                tokens.push({ type: type, value: ident, line: line });
                 continue;
             }
 
             // Symbols (handle multi-character operators first)
-            if (char === '-' && input[i+1] === '>') {
-                tokens.push({ type: TokenType.SYMBOL, value: '->' });
+            if (char === '-' && input[i + 1] === '>') {
+                tokens.push({ type: TokenType.SYMBOL, value: '->', line: line });
                 i += 2;
                 continue;
             }
 
             if (/[{}():,.\-=>\/]/.test(char)) {
-                tokens.push({ type: TokenType.SYMBOL, value: char });
+                tokens.push({ type: TokenType.SYMBOL, value: char, line: line });
                 i++;
                 continue;
             }
@@ -144,7 +153,7 @@ var CircuitDSL = (function() {
             i++;
         }
 
-        tokens.push({ type: TokenType.EOF, value: null });
+        tokens.push({ type: TokenType.EOF, value: null, line: line });
         return tokens;
     }
 
@@ -159,7 +168,7 @@ var CircuitDSL = (function() {
         function consume(expected) {
             var token = current();
             if (expected && token.value !== expected) {
-                throw new Error('Expected ' + expected + ' but got ' + token.value);
+                throw new Error('Expected ' + expected + ' but got ' + token.value + ' at line ' + token.line);
             }
             pos++;
             return token;
@@ -288,10 +297,23 @@ var CircuitDSL = (function() {
 
             var from = consume().value;
             consume('.');
+
+            // Parse pin name (can be IDENTIFIER or STRING)
+            var fromPinToken = current();
+            if (fromPinToken.type !== TokenType.IDENTIFIER && fromPinToken.type !== TokenType.STRING) {
+                throw new Error('Expected pin name (identifier or string) after "' + from + '."');
+            }
             var fromPin = consume().value;
+
             consume('->');
             var to = consume().value;
             consume('.');
+
+            // Parse pin name (can be IDENTIFIER or STRING)
+            var toPinToken = current();
+            if (toPinToken.type !== TokenType.IDENTIFIER && toPinToken.type !== TokenType.STRING) {
+                throw new Error('Expected pin name (identifier or string) after "' + to + '."');
+            }
             var toPin = consume().value;
 
             return {
@@ -324,7 +346,7 @@ var CircuitDSL = (function() {
 
     // Public API
     return {
-        parse: function(dslCode) {
+        parse: function (dslCode) {
             try {
                 var tokens = tokenize(dslCode);
                 var ast = parse(tokens);
@@ -335,7 +357,7 @@ var CircuitDSL = (function() {
         },
 
         // Get available component types
-        getComponentTypes: function() {
+        getComponentTypes: function () {
             return [
                 '74LS181', '74LS181_8bit', '74LS163', '74LS163_8bit', '74LS191_8bit',
                 '74LS245', '74LS175', '74LS174', '74LS273', '74LS139', '74LS374',

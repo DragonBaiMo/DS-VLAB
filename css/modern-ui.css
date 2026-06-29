@@ -1,0 +1,1290 @@
+/* Modern UI Overhaul for DS-VLAB */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    --bg-color: #1e1e2e;
+    --surface-color: #2a2a3c;
+    --surface-transparent: rgba(42, 42, 60, 0.8);
+    --primary-color: #7aa2f7;
+    --secondary-color: #bb9af7;
+    --text-color: #c0caf5;
+    --text-muted: #a9b1d6;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --glass-bg: rgba(30, 30, 46, 0.7);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+    --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --radius-lg: 16px;
+    --radius-md: 8px;
+    --radius-sm: 4px;
+    --transition: all 0.3s ease;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-image:
+        radial-gradient(circle at 10% 20%, rgba(122, 162, 247, 0.1) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(187, 154, 247, 0.1) 0%, transparent 20%);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--surface-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color);
+}
+
+/* Menu Bar Overrides */
+#menu {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: var(--glass-border);
+    padding: 0 20px;
+    height: 60px;
+    /* Increased height */
+    display: flex;
+    align-items: center;
+    box-shadow: var(--shadow-md);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10000;
+    /* Ensure it's on top */
+}
+
+ul#navmenu {
+    background: transparent !important;
+    /* Override legacy blue background */
+    height: auto !important;
+    display: flex !important;
+    align-items: center;
+}
+
+ul#navmenu li {
+    background: none !important;
+    /* Remove legacy separator images */
+    border: none !important;
+    float: none !important;
+    display: block !important;
+    height: auto !important;
+}
+
+ul#navmenu>li>a {
+    color: var(--text-color) !important;
+    text-decoration: none;
+    padding: 10px 18px !important;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    font-size: 14px;
+    transition: var(--transition);
+    display: block;
+    background: transparent !important;
+    border: none !important;
+    line-height: normal !important;
+    height: auto !important;
+}
+
+/* Dropdown Menus */
+ul#navmenu ul {
+    background: var(--surface-color) !important;
+    border: var(--glass-border) !important;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    padding: 8px 0 !important;
+    min-width: 200px !important;
+    top: 100% !important;
+    left: 0 !important;
+    display: none;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.2s, transform 0.2s;
+    width: auto !important;
+}
+
+ul#navmenu li:hover ul {
+    display: block !important;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+ul#navmenu ul li {
+    float: none !important;
+    display: block !important;
+    height: auto !important;
+    line-height: normal !important;
+    width: 100% !important;
+}
+
+ul#navmenu ul li a {
+    color: var(--text-muted) !important;
+    padding: 10px 20px !important;
+    font-size: 13px;
+    transition: var(--transition);
+    background: transparent !important;
+    border: none !important;
+    text-align: left;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+ul#navmenu ul li a:hover {
+    background: rgba(122, 162, 247, 0.1) !important;
+    color: var(--primary-color) !important;
+    padding-left: 25px !important;
+}
+
+/* Toolbar */
+#toolbar {
+    position: fixed;
+    top: 70px;
+    left: 20px;
+    background: var(--surface-transparent);
+    backdrop-filter: blur(12px);
+    padding: 10px;
+    border-radius: var(--radius-lg);
+    border: var(--glass-border);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 900;
+    width: auto !important;
+    height: auto !important;
+}
+
+#toolbar img {
+    width: 32px;
+    height: 32px;
+    padding: 8px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition);
+    filter: grayscale(100%) brightness(1.5);
+    opacity: 0.7;
+}
+
+#toolbar img:hover {
+    background: rgba(122, 162, 247, 0.2);
+    filter: grayscale(0%) brightness(1.1);
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* Toolbox Overrides */
+#toolbox {
+    position: fixed !important;
+    top: 80px !important;
+    /* Clears the menu */
+    right: 20px !important;
+    left: auto !important;
+    width: 280px !important;
+    height: calc(100vh - 100px) !important;
+    background: var(--surface-transparent) !important;
+    backdrop-filter: blur(12px);
+    border: var(--glass-border) !important;
+    border-radius: var(--radius-lg) !important;
+    box-shadow: var(--shadow-lg) !important;
+    display: flex !important;
+    flex-direction: column;
+    z-index: 9000 !important;
+    visibility: visible !important;
+    /* Force visibility */
+    padding: 0 !important;
+}
+
+#toolbox .ui-widget-header {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: none !important;
+    color: var(--text-color) !important;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    margin: 0;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+#accordion-resizer {
+    padding: 15px !important;
+    overflow-y: auto;
+    height: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box;
+}
+
+/* Accordion Styles */
+.ui-accordion .ui-accordion-header {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    color: var(--text-muted) !important;
+    border-radius: var(--radius-md) !important;
+    margin-bottom: 8px !important;
+    padding: 12px 15px !important;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px !important;
+    font-weight: 500;
+    transition: var(--transition);
+    outline: none;
+}
+
+.ui-accordion .ui-accordion-header-active {
+    background: rgba(122, 162, 247, 0.15) !important;
+    color: var(--primary-color) !important;
+    border-color: rgba(122, 162, 247, 0.3) !important;
+}
+
+.ui-accordion .ui-accordion-header .ui-accordion-header-icon {
+    display: none;
+    /* Hide default jQuery UI icons */
+}
+
+.ui-accordion .ui-accordion-content {
+    background: transparent !important;
+    border: none !important;
+    padding: 5px 0 15px 0 !important;
+    color: var(--text-muted);
+    height: auto !important;
+}
+
+#toolbox ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+#toolbox li {
+    background: rgba(30, 30, 46, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: var(--radius-sm);
+    padding: 10px 5px !important;
+    text-align: center;
+    font-size: 12px;
+    cursor: grab;
+    transition: var(--transition);
+    color: var(--text-muted) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+}
+
+#toolbox li:hover {
+    background: rgba(122, 162, 247, 0.2) !important;
+    border-color: var(--primary-color) !important;
+    color: #fff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Canvas Area */
+#demo {
+    background-color: var(--bg-color) !important;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    width: 100vw !important;
+    height: 100vh !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+/* Dialogs */
+.ui-dialog {
+    background: var(--surface-color) !important;
+    border: var(--glass-border) !important;
+    border-radius: var(--radius-lg) !important;
+    box-shadow: var(--shadow-lg) !important;
+    padding: 0 !important;
+    font-family: 'Inter', sans-serif !important;
+    overflow: hidden;
+}
+
+.ui-dialog-titlebar {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    padding: 15px 20px !important;
+    color: var(--text-color) !important;
+}
+
+.ui-dialog-content {
+    color: var(--text-muted) !important;
+    padding: 20px !important;
+}
+
+.ui-button {
+    background: var(--primary-color) !important;
+    border: none !important;
+    color: #fff !important;
+    border-radius: var(--radius-sm) !important;
+    padding: 8px 16px !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 500 !important;
+    transition: var(--transition) !important;
+}
+
+.ui-button:hover {
+    background: #658ce0 !important;
+    box-shadow: 0 4px 12px rgba(122, 162, 247, 0.4);
+}
+
+/* Component Styles on Canvas */
+.component-node {
+    border: 1px solid var(--primary-color);
+    background: rgba(30, 30, 46, 0.9);
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    color: #fff;
+}
+
+/* Tooltip */
+.tooltip {
+    position: relative;
+}
+
+/* Custom Scrollbar for Accordion */
+#accordion-resizer::-webkit-scrollbar {
+    width: 4px;
+}
+
+/* Logo/About */
+#c1 img {
+    box-sizing: border-box;
+}
+
+/* Accordion Styles */
+.ui-accordion .ui-accordion-header {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    color: var(--text-muted) !important;
+    border-radius: var(--radius-md) !important;
+    margin-bottom: 8px !important;
+    padding: 12px 15px !important;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px !important;
+    font-weight: 500;
+    transition: var(--transition);
+    outline: none;
+}
+
+.ui-accordion .ui-accordion-header-active {
+    background: rgba(122, 162, 247, 0.15) !important;
+    color: var(--primary-color) !important;
+    border-color: rgba(122, 162, 247, 0.3) !important;
+}
+
+.ui-accordion .ui-accordion-header .ui-accordion-header-icon {
+    display: none;
+    /* Hide default jQuery UI icons */
+}
+
+.ui-accordion .ui-accordion-content {
+    background: transparent !important;
+    border: none !important;
+    padding: 5px 0 15px 0 !important;
+    color: var(--text-muted);
+    height: auto !important;
+}
+
+#toolbox ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+#toolbox li {
+    background: rgba(30, 30, 46, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: var(--radius-sm);
+    padding: 10px 5px !important;
+    text-align: center;
+    font-size: 12px;
+    cursor: grab;
+    transition: var(--transition);
+    color: var(--text-muted) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+}
+
+#toolbox li:hover {
+    background: rgba(122, 162, 247, 0.2) !important;
+    border-color: var(--primary-color) !important;
+    color: #fff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Canvas Area */
+#demo {
+    background-color: var(--bg-color) !important;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    width: 100vw !important;
+    height: 100vh !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+/* Dialogs */
+.ui-dialog {
+    background: var(--surface-color) !important;
+    border: var(--glass-border) !important;
+    border-radius: var(--radius-lg) !important;
+    box-shadow: var(--shadow-lg) !important;
+    padding: 0 !important;
+    font-family: 'Inter', sans-serif !important;
+    overflow: hidden;
+}
+
+.ui-dialog-titlebar {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    padding: 15px 20px !important;
+    color: var(--text-color) !important;
+}
+
+.ui-dialog-content {
+    color: var(--text-muted) !important;
+    padding: 20px !important;
+}
+
+.ui-button {
+    background: var(--primary-color) !important;
+    border: none !important;
+    color: #fff !important;
+    border-radius: var(--radius-sm) !important;
+    padding: 8px 16px !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 500 !important;
+    transition: var(--transition) !important;
+}
+
+.ui-button:hover {
+    background: #658ce0 !important;
+    box-shadow: 0 4px 12px rgba(122, 162, 247, 0.4);
+}
+
+/* Component Styles on Canvas */
+.component-node {
+    border: 1px solid var(--primary-color);
+    background: rgba(30, 30, 46, 0.9);
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    color: #fff;
+}
+
+/* Tooltip */
+.tooltip {
+    position: relative;
+}
+
+/* Custom Scrollbar for Accordion */
+#accordion-resizer::-webkit-scrollbar {
+    width: 4px;
+}
+
+/* Logo/About */
+#c1 img {
+    border-radius: 50%;
+    border: 2px solid var(--primary-color);
+    padding: 2px;
+}
+
+.ui-dialog-content {
+    color: var(--text-muted) !important;
+    padding: 20px !important;
+}
+
+.ui-button {
+    background: var(--primary-color) !important;
+    border: none !important;
+    color: #fff !important;
+    border-radius: var(--radius-sm) !important;
+    padding: 8px 16px !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 500 !important;
+    transition: var(--transition) !important;
+}
+
+.ui-button:hover {
+    background: #658ce0 !important;
+    box-shadow: 0 4px 12px rgba(122, 162, 247, 0.4);
+}
+
+/* Component Styles on Canvas */
+.component-node {
+    border: 1px solid var(--primary-color);
+    background: rgba(30, 30, 46, 0.9);
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    color: #fff;
+}
+
+/* Tooltip */
+.tooltip {
+    position: relative;
+}
+
+/* Custom Scrollbar for Accordion */
+#accordion-resizer::-webkit-scrollbar {
+    width: 4px;
+}
+
+/* Logo/About */
+#c1 img {
+    box-sizing: border-box;
+}
+
+/* Accordion Styles */
+.ui-accordion .ui-accordion-header {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    color: var(--text-muted) !important;
+    border-radius: var(--radius-md) !important;
+    margin-bottom: 8px !important;
+    padding: 12px 15px !important;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px !important;
+    font-weight: 500;
+    transition: var(--transition);
+    outline: none;
+}
+
+.ui-accordion .ui-accordion-header-active {
+    background: rgba(122, 162, 247, 0.15) !important;
+    color: var(--primary-color) !important;
+    border-color: rgba(122, 162, 247, 0.3) !important;
+}
+
+.ui-accordion .ui-accordion-header .ui-accordion-header-icon {
+    display: none;
+    /* Hide default jQuery UI icons */
+}
+
+.ui-accordion .ui-accordion-content {
+    background: transparent !important;
+    border: none !important;
+    padding: 5px 0 15px 0 !important;
+    color: var(--text-muted);
+    height: auto !important;
+}
+
+#toolbox ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+#toolbox li {
+    background: rgba(30, 30, 46, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: var(--radius-sm);
+    padding: 10px 5px !important;
+    text-align: center;
+    font-size: 12px;
+    cursor: grab;
+    transition: var(--transition);
+    color: var(--text-muted) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+}
+
+#toolbox li:hover {
+    background: rgba(122, 162, 247, 0.2) !important;
+    border-color: var(--primary-color) !important;
+    color: #fff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Canvas Area */
+#demo {
+    background-color: var(--bg-color) !important;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    width: 100vw !important;
+    height: 100vh !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+/* Dialogs */
+.ui-dialog {
+    background: var(--surface-color) !important;
+    border: var(--glass-border) !important;
+    border-radius: var(--radius-lg) !important;
+    box-shadow: var(--shadow-lg) !important;
+    padding: 0 !important;
+    font-family: 'Inter', sans-serif !important;
+    overflow: hidden;
+}
+
+.ui-dialog-titlebar {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    padding: 15px 20px !important;
+    color: var(--text-color) !important;
+}
+
+.ui-dialog-content {
+    color: var(--text-muted) !important;
+    padding: 20px !important;
+}
+
+.ui-button {
+    background: var(--primary-color) !important;
+    border: none !important;
+    color: #fff !important;
+    border-radius: var(--radius-sm) !important;
+    padding: 8px 16px !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 500 !important;
+    transition: var(--transition) !important;
+}
+
+.ui-button:hover {
+    background: #658ce0 !important;
+    box-shadow: 0 4px 12px rgba(122, 162, 247, 0.4);
+}
+
+/* Component Styles on Canvas */
+.component-node {
+    border: 1px solid var(--primary-color);
+    background: rgba(30, 30, 46, 0.9);
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    color: #fff;
+}
+
+/* Tooltip */
+.tooltip {
+    position: relative;
+}
+
+/* Custom Scrollbar for Accordion */
+#accordion-resizer::-webkit-scrollbar {
+    width: 4px;
+}
+
+/* Logo/About */
+#c1 img {
+    border-radius: 50%;
+    border: 2px solid var(--primary-color);
+    padding: 2px;
+}
+
+/* Custom Scrollbar for Accordion */
+#accordion-resizer::-webkit-scrollbar {
+    width: 4px;
+}
+
+/* Logo/About */
+#c1 img {
+    box-sizing: border-box;
+}
+
+/* Accordion Styles */
+.ui-accordion .ui-accordion-header {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    color: var(--text-muted) !important;
+    border-radius: var(--radius-md) !important;
+    margin-bottom: 8px !important;
+    padding: 12px 15px !important;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px !important;
+    font-weight: 500;
+    transition: var(--transition);
+    outline: none;
+}
+
+.ui-accordion .ui-accordion-header-active {
+    background: rgba(122, 162, 247, 0.15) !important;
+    color: var(--primary-color) !important;
+    border-color: rgba(122, 162, 247, 0.3) !important;
+}
+
+.ui-accordion .ui-accordion-header .ui-accordion-header-icon {
+    display: none;
+    /* Hide default jQuery UI icons */
+}
+
+.ui-accordion .ui-accordion-content {
+    background: transparent !important;
+    border: none !important;
+    padding: 5px 0 15px 0 !important;
+    color: var(--text-muted);
+    height: auto !important;
+}
+
+#toolbox ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+#toolbox li {
+    background: rgba(30, 30, 46, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: var(--radius-sm);
+    padding: 10px 5px !important;
+    text-align: center;
+    font-size: 12px;
+    cursor: grab;
+    transition: var(--transition);
+    color: var(--text-muted) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+}
+
+#toolbox li:hover {
+    background: rgba(122, 162, 247, 0.2) !important;
+    border-color: var(--primary-color) !important;
+    color: #fff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Canvas Area */
+#demo {
+    background-color: var(--bg-color) !important;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    width: 100vw !important;
+    height: 100vh !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+/* Dialogs */
+.ui-dialog {
+    background: var(--surface-color) !important;
+    border: var(--glass-border) !important;
+    border-radius: var(--radius-lg) !important;
+    box-shadow: var(--shadow-lg) !important;
+    padding: 0 !important;
+    font-family: 'Inter', sans-serif !important;
+    overflow: hidden;
+}
+
+.ui-dialog-titlebar {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    padding: 15px 20px !important;
+    color: var(--text-color) !important;
+}
+
+.ui-dialog-content {
+    color: var(--text-muted) !important;
+    padding: 20px !important;
+}
+
+.ui-button {
+    background: var(--primary-color) !important;
+    border: none !important;
+    color: #fff !important;
+    border-radius: var(--radius-sm) !important;
+    padding: 8px 16px !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 500 !important;
+    transition: var(--transition) !important;
+}
+
+.ui-button:hover {
+    background: #658ce0 !important;
+    box-shadow: 0 4px 12px rgba(122, 162, 247, 0.4);
+}
+
+/* Component Styles on Canvas */
+.component-node {
+    border: 1px solid var(--primary-color);
+    background: rgba(30, 30, 46, 0.9);
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    color: #fff;
+}
+
+/* Tooltip */
+.tooltip {
+    position: relative;
+}
+
+/* Custom Scrollbar for Accordion */
+#accordion-resizer::-webkit-scrollbar {
+    width: 4px;
+}
+
+/* Logo/About */
+#c1 img {
+    border-radius: 50%;
+    border: 2px solid var(--primary-color);
+    padding: 2px;
+}
+
+.tooltip {
+    position: relative;
+}
+
+/* Custom Scrollbar for Accordion */
+#accordion-resizer::-webkit-scrollbar {
+    width: 4px;
+}
+
+/* Logo/About */
+#c1 img {
+    box-sizing: border-box;
+}
+
+/* Accordion Styles */
+.ui-accordion .ui-accordion-header {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    color: var(--text-muted) !important;
+    border-radius: var(--radius-md) !important;
+    margin-bottom: 8px !important;
+    padding: 12px 15px !important;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px !important;
+    font-weight: 500;
+    transition: all 0.3s ease-in-out;
+    /* Advanced transition */
+    outline: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.ui-accordion .ui-accordion-header:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+    transition: all 0.5s ease-in-out;
+}
+
+.ui-accordion .ui-accordion-header:hover:before {
+    left: 100%;
+}
+
+.ui-accordion .ui-accordion-header-active {
+    background: rgba(122, 162, 247, 0.15) !important;
+    color: var(--primary-color) !important;
+    border-color: rgba(122, 162, 247, 0.3) !important;
+    box-shadow: 0 4px 15px rgba(122, 162, 247, 0.2);
+    /* Added shadow for active state */
+}
+
+.ui-accordion .ui-accordion-header .ui-accordion-header-icon {
+    display: none;
+    /* Hide default jQuery UI icons */
+}
+
+.ui-accordion .ui-accordion-content {
+    background: transparent !important;
+    border: none !important;
+    padding: 5px 0 15px 0 !important;
+    color: var(--text-muted);
+    height: auto !important;
+}
+
+#toolbox ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+#toolbox li {
+    background: rgba(255, 255, 255, 0.05) !important;
+    /* Updated background */
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: var(--radius-sm);
+    padding: 10px 5px !important;
+    text-align: center;
+    font-size: 12px;
+    cursor: grab;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    /* Advanced transition */
+    color: var(--text-muted) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* Added initial shadow */
+}
+
+#toolbox li:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(122, 162, 247, 0.1);
+    /* Subtle overlay */
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+#toolbox li:hover:before {
+    opacity: 1;
+}
+
+#toolbox li:hover {
+    background: rgba(122, 162, 247, 0.2) !important;
+    border-color: var(--primary-color) !important;
+    color: #fff !important;
+    transform: translateY(-3px) scale(1.02);
+    /* More pronounced hover effect */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    /* Enhanced shadow */
+    z-index: 2;
+    /* Bring to front on hover */
+}
+
+/* Canvas Area */
+#demo {
+    background-color: var(--bg-color) !important;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    width: 100vw !important;
+    height: 100vh !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+/* Dialogs */
+.ui-dialog {
+    background: var(--surface-color) !important;
+    border: var(--glass-border) !important;
+    border-radius: var(--radius-lg) !important;
+    box-shadow: var(--shadow-lg) !important;
+    padding: 0 !important;
+    font-family: 'Inter', sans-serif !important;
+    overflow: hidden;
+}
+
+.ui-dialog-titlebar {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    padding: 15px 20px !important;
+    color: var(--text-color) !important;
+}
+
+.ui-dialog-content {
+    color: var(--text-muted) !important;
+    padding: 20px !important;
+}
+
+.ui-button {
+    background: var(--primary-color) !important;
+    border: none !important;
+    color: #fff !important;
+    border-radius: var(--radius-sm) !important;
+    padding: 8px 16px !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 500 !important;
+    transition: var(--transition) !important;
+}
+
+.ui-button:hover {
+    background: #658ce0 !important;
+    box-shadow: 0 4px 12px rgba(122, 162, 247, 0.4);
+}
+
+/* Component Styles on Canvas */
+.component-node {
+    border: 1px solid var(--primary-color);
+    background: rgba(30, 30, 46, 0.9);
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    color: #fff;
+}
+
+/* Tooltip */
+.tooltip {
+    position: relative;
+}
+
+/* Custom Scrollbar for Accordion */
+#accordion-resizer::-webkit-scrollbar {
+    width: 4px;
+    width: 4px;
+}
+
+/* Logo/About */
+#c1 img {
+    box-sizing: border-box;
+}
+
+/* Accordion Styles */
+.ui-accordion .ui-accordion-header {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    color: var(--text-muted) !important;
+    border-radius: var(--radius-md) !important;
+    margin-bottom: 8px !important;
+    padding: 12px 15px !important;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px !important;
+    font-weight: 500;
+    transition: all 0.3s ease-in-out;
+    /* Advanced transition */
+    outline: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.ui-accordion .ui-accordion-header:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+    transition: all 0.5s ease-in-out;
+}
+
+.ui-accordion .ui-accordion-header:hover:before {
+    left: 100%;
+}
+
+.ui-accordion .ui-accordion-header-active {
+    background: rgba(122, 162, 247, 0.15) !important;
+    color: var(--primary-color) !important;
+    border-color: rgba(122, 162, 247, 0.3) !important;
+    box-shadow: 0 4px 15px rgba(122, 162, 247, 0.2);
+    /* Added shadow for active state */
+}
+
+.ui-accordion .ui-accordion-header .ui-accordion-header-icon {
+    display: none;
+    /* Hide default jQuery UI icons */
+}
+
+.ui-accordion .ui-accordion-content {
+    background: transparent !important;
+    border: none !important;
+    padding: 5px 0 15px 0 !important;
+    color: var(--text-muted);
+    height: auto !important;
+}
+
+#toolbox ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+#toolbox li {
+    background: rgba(255, 255, 255, 0.05) !important;
+    /* Updated background */
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: var(--radius-sm);
+    padding: 10px 5px !important;
+    text-align: center;
+    font-size: 12px;
+    cursor: grab;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    /* Advanced transition */
+    color: var(--text-muted) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* Added initial shadow */
+}
+
+#toolbox li:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(122, 162, 247, 0.1);
+    /* Subtle overlay */
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+#toolbox li:hover:before {
+    opacity: 1;
+}
+
+#toolbox li:hover {
+    background: rgba(122, 162, 247, 0.2) !important;
+    border-color: var(--primary-color) !important;
+    color: #fff !important;
+    transform: translateY(-3px) scale(1.02);
+    /* More pronounced hover effect */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    /* Enhanced shadow */
+    z-index: 2;
+    /* Bring to front on hover */
+}
+
+/* Canvas Area */
+#demo {
+    background-color: var(--bg-color) !important;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    width: 100vw !important;
+    height: 100vh !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+/* Dialogs */
+.ui-dialog {
+    background: var(--surface-color) !important;
+    border: var(--glass-border) !important;
+    border-radius: var(--radius-lg) !important;
+    box-shadow: var(--shadow-lg) !important;
+    padding: 0 !important;
+    font-family: 'Inter', sans-serif !important;
+    overflow: hidden;
+}
+
+.ui-dialog-titlebar {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    padding: 15px 20px !important;
+    color: var(--text-color) !important;
+}
+
+.ui-dialog-content {
+    color: var(--text-muted) !important;
+    padding: 20px !important;
+}
+
+.ui-button {
+    background: var(--primary-color) !important;
+    border: none !important;
+    color: #fff !important;
+    border-radius: var(--radius-sm) !important;
+    padding: 8px 16px !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 500 !important;
+    transition: var(--transition) !important;
+}
+
+.ui-button:hover {
+    background: #658ce0 !important;
+    box-shadow: 0 4px 12px rgba(122, 162, 247, 0.4);
+}
+
+/* Component Styles on Canvas */
+.component-node {
+    border: 1px solid var(--primary-color);
+    background: rgba(30, 30, 46, 0.9);
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    color: #fff;
+}
+
+/* Tooltip */
+.tooltip {
+    position: relative;
+}
+
+/* Custom Scrollbar for Accordion */
+#accordion-resizer::-webkit-scrollbar {
+    width: 4px;
+}
+
+/* Logo/About */
+#c1 img {
+    border-radius: 50%;
+    border: 2px solid var(--primary-color);
+    padding: 2px;
+}
+
+.ui-accordion .ui-accordion-content {
+    background: transparent !important;
+    border: none !important;
+    padding: 10px !important;
+    overflow: visible !important;
+}

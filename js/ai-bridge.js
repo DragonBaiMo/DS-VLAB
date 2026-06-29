@@ -4,7 +4,7 @@ This module provides the interface for AI to generate and manipulate circuits
 Integrates Circuit-DSL parser and translator with the main platform
 */
 
-var AIBridge = (function() {
+var AIBridge = (function () {
     'use strict';
 
     // Execute DSL code and create circuit
@@ -23,25 +23,18 @@ var AIBridge = (function() {
         try {
             var translateResult = CircuitTranslator.translate(parseResult.ast, circuit);
 
-            // Create connections after a short delay to ensure DOM is ready
+            // Create connections after layout settles
             if (translateResult.connections && translateResult.connections.length > 0) {
-                setTimeout(function() {
-                    translateResult.connections.forEach(function(conn) {
-                        CircuitTranslator.createConnection(
-                            circuit,
-                            conn.fromComp,
-                            conn.fromPin,
-                            conn.toComp,
-                            conn.toPin
-                        );
-                    });
-                }, 500);
+                CircuitTranslator.applyConnections(circuit, translateResult.connections, {
+                    initialDelay: 150
+                });
             }
 
             return {
                 success: true,
                 message: translateResult.message,
-                ast: parseResult.ast
+                ast: parseResult.ast,
+                layout: translateResult.layout
             };
         } catch (e) {
             return {
@@ -158,12 +151,48 @@ var AIBridge = (function() {
         return parseResult;
     }
 
+    // Parse and execute DSL code
+    function executeDSLCode(dslCode, circuit) {
+        var result = executeDSL(dslCode, circuit);
+        if (result.success) {
+            alert("电路创建成功！\nCircuit created successfully!\n\n" + result.message);
+        } else {
+            alert("错误 (Error):\n" + result.error);
+        }
+    }
     // Show DSL editor dialog
     function showDSLEditor(circuit) {
-        var dslInput = prompt(
-            "输入 Circuit-DSL 代码 (Enter Circuit-DSL code):\n\n" +
-            "示例 (Example):\n" +
-            "circuit MyCircuit {\n" +
+        var $dialog = $("#dslEditorDialog");
+        if ($dialog.length === 0) {
+            $dialog = $('<div id="dslEditorDialog" title="Circuit-DSL 编辑器 (Editor)">' +
+                '<div style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">' +
+                '<span>在此处输入或粘贴 DSL 代码:</span>' +
+                '<select id="dslExampleSelect" style="padding: 2px;">' +
+                '<option value="">-- 插入示例 (Insert Example) --</option>' +
+                '<option value="simple_counter">简单计数器 (Simple Counter)</option>' +
+                '<option value="alu_demo">8位 ALU 演示 (8-bit ALU)</option>' +
+                '<option value="reversible_counter">可逆计数器 (Reversible Counter)</option>' +
+                '<option value="text_annotation">文字标注 (Text Annotation)</option>' +
+                '</select>' +
+                '</div>' +
+                '<textarea id="dslCodeInput" class="text ui-widget-content ui-corner-all" style="width: 100%; height: 300px; font-family: monospace; box-sizing: border-box; padding: 5px; white-space: pre; overflow: auto;"></textarea>' +
+                '</div>').appendTo('body');
+
+            // Handle example selection
+            $(document).on('change', '#dslExampleSelect', function () {
+                var selected = $(this).val();
+                if (selected) {
+                    var examples = getExampleDSL();
+                    if (examples[selected]) {
+                        $("#dslCodeInput").val(examples[selected]);
+                    }
+                    $(this).val(""); // Reset selection
+                }
+            });
+        }
+
+        // Set default example if empty
+        var defaultCode = "circuit MyCircuit {\n" +
             "  components {\n" +
             "    sw1: Switch at (100, 100)\n" +
             "    led1: Led at (300, 100)\n" +
@@ -171,28 +200,83 @@ var AIBridge = (function() {
             "  connections {\n" +
             "    sw1.pin0 -> led1.pin0\n" +
             "  }\n" +
-            "}"
-        );
+            "}";
 
-        if (dslInput) {
-            var result = executeDSL(dslInput, circuit);
-            if (result.success) {
-                alert("电路创建成功！\nCircuit created successfully!\n\n" + result.message);
-            } else {
-                alert("错误 (Error):\n" + result.error);
-            }
+        if (!$("#dslCodeInput").val()) {
+            $("#dslCodeInput").val(defaultCode);
         }
+
+        $dialog.dialog({
+            modal: true,
+            width: 700,
+            height: 550,
+            buttons: {
+                "生成电路 (Generate)": function () {
+                    var dslCode = $("#dslCodeInput").val();
+                    if (dslCode) {
+                        executeDSLCode(dslCode, circuit);
+                        $(this).dialog("close");
+                    }
+                },
+                "清空 (Clear)": function () {
+                    $("#dslCodeInput").val("");
+                },
+                "取消 (Cancel)": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+    }
+
+    // Import DSL from file
+    function importDSLFile(circuit, fileInputElement) {
+        var file = fileInputElement.files[0];
+        if (!file) {
+            alert("请先选择一个 DSL 文件\nPlease select a DSL file first");
+            return;
+        }
+
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            var dslCode = e.target.result;
+            executeDSLCode(dslCode, circuit);
+        };
+        reader.onerror = function () {
+            alert("读取文件失败\nFailed to read file");
+        };
+        reader.readAsText(file);
     }
 
     // Export current circuit as DSL
     function showDSLExport(circuit) {
         var result = exportToDSL(circuit);
         if (result.success) {
-            prompt(
-                "电路已导出为 DSL 代码 (Circuit exported as DSL):\n" +
-                "复制以下代码可用于 AI 生成或重建电路",
-                result.dsl
-            );
+            var $dialog = $("#dslExportDialog");
+            if ($dialog.length === 0) {
+                $dialog = $('<div id="dslExportDialog" title="导出 DSL (Export DSL)">' +
+                    '<p style="margin-bottom: 5px;">复制以下代码 (Copy the code below):</p>' +
+                    '<textarea id="dslCodeOutput" readonly class="text ui-widget-content ui-corner-all" style="width: 100%; height: 300px; font-family: monospace; box-sizing: border-box; padding: 5px;"></textarea>' +
+                    '</div>').appendTo('body');
+            }
+
+            $("#dslCodeOutput").val(result.dsl);
+
+            $dialog.dialog({
+                modal: true,
+                width: 600,
+                height: 500,
+                buttons: {
+                    "复制 (Copy)": function () {
+                        var copyText = document.getElementById("dslCodeOutput");
+                        copyText.select();
+                        document.execCommand("copy");
+                        // alert("代码已复制到剪贴板 (Copied to clipboard)");
+                    },
+                    "关闭 (Close)": function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
         } else {
             alert("导出失败 (Export failed):\n" + result.error);
         }
@@ -206,7 +290,8 @@ var AIBridge = (function() {
         getComponentDocs: getComponentDocs,
         getExamples: getExampleDSL,
         showEditor: showDSLEditor,
-        showExport: showDSLExport
+        showExport: showDSLExport,
+        importFile: importDSLFile
     };
 })();
 

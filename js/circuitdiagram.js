@@ -19,7 +19,37 @@ function Circuit() {
     this.linecolor = "#00BFFF";  // Changed from yellow to DeepSkyBlue for better visibility
     var targetPin = null;  //拖拽连线时的目标引脚
     var _this = this;
-    var  arrowCount=0;
+    var arrowCount = 0;
+
+    // Highlight connections attached to a pin
+    this.highlightPinConnections = function (pinDiv, highlight) {
+        var pinId = pinDiv.id;
+        var p = pinId.indexOf("Pin");
+        if (p === -1) return;
+
+        var compId = pinId.substring(0, p);
+        var pinNo = parseInt(pinId.substring(p + 3));
+
+        var comp = _this.findById(compId);
+        if (comp && comp.connection && comp.connection[pinNo]) {
+            var connections = comp.connection[pinNo];
+            for (var i = 0; i < connections.length; i++) {
+                var line = connections[i][0];
+                var path = $(line).find("path.my-line");
+                var arrow = $(line).find("path.my-arrow");
+
+                if (highlight) {
+                    path.css("stroke", "#ff4081").css("stroke-width", "3"); // Modern pink highlight
+                    arrow.css("fill", "#ff4081").css("stroke", "#ff4081");
+                    $(line).css("z-index", 9999);
+                } else {
+                    path.css("stroke", _this.linecolor).css("stroke-width", "1.5");
+                    arrow.css("fill", _this.linecolor).css("stroke", _this.linecolor);
+                    $(line).css("z-index", "auto");
+                }
+            }
+        }
+    };
 
     //在父级div（parentId）的指定位置（offsetX, offsetY）添加实验器件（componentName）
     this.addComponent = function (parentId, componentName, offsetX, offsetY, componentId) {
@@ -79,7 +109,7 @@ function Circuit() {
                 pinDiv.style.height = component.pinHeight + 2 + "px";
             }
             ;
-           
+
             pinDiv.style.left = component.paddingLR + (component.width - component.paddingLR * 2) * component.pinPosition[i][0] + "px";
 
             if (component.pinPosition[i][1] == 1) {
@@ -105,24 +135,34 @@ function Circuit() {
                 $(pinDiv).bind("mousedown", doNone);
                 $(pinDiv).bind("mouseenter", function () {
                     targetPin = this;
+                    _this.highlightPinConnections(this, true);
                 });
                 $(pinDiv).bind("mouseleave", function () {
                     targetPin = null;
+                    _this.highlightPinConnections(this, false);
                 });
             }
             ;
             if (pinFun == 1) {   //从输出引脚输出
                 pinDiv.style.color = "green";
                 $(pinDiv).bind("mousedown", lineDrag);
+                $(pinDiv).bind("mouseenter", function () {
+                    _this.highlightPinConnections(this, true);
+                });
+                $(pinDiv).bind("mouseleave", function () {
+                    _this.highlightPinConnections(this, false);
+                });
             }
             ;
             if (pinFun == 11) {   //双向引脚/三态门
                 pinDiv.style.color = "#b200ff";
                 $(pinDiv).bind("mouseenter", function () {
                     targetPin = this;
+                    _this.highlightPinConnections(this, true);
                 });
                 $(pinDiv).bind("mouseleave", function () {
                     targetPin = null;
+                    _this.highlightPinConnections(this, false);
                 });
                 $(pinDiv).bind("mousedown", lineDrag);
             }
@@ -163,7 +203,7 @@ function Circuit() {
             compDiv.style.minWidth = "100px";
             compDiv.style.minHeight = "30px";
 
-            $(compDiv).bind("dblclick", function(e) {
+            $(compDiv).bind("dblclick", function (e) {
                 e.stopPropagation();
                 editTextLabel(component);
             });
@@ -181,14 +221,14 @@ function Circuit() {
         var path = "M " + fromX + " " + fromY + " L " + toX + " " + toY;
         newLine.setAttribute("class", "div-line");
 
-     //   var timestamp=new Date().getTime();
-       arrowCount=arrowCount+1;
+        //   var timestamp=new Date().getTime();
+        arrowCount = arrowCount + 1;
 
         newLine.innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\"" +
             "style='overflow: inherit;position: absolute;left:0;top:0;'>" +
             "\n" +
             "<defs>" +
-            "<marker id=\"idArrow"+arrowCount+"\"\n" +
+            "<marker id=\"idArrow" + arrowCount + "\"\n" +
             "\n" +
             "         viewBox=\"0 0 20 20\" refX=\"0\" refY=\"10\"\n" +
             "\n" +
@@ -201,8 +241,8 @@ function Circuit() {
             "      </marker>\n" +
             "\n" +
             "</defs>" +
-            "<path stroke-width='1.5' fill='none' class='my-line'  stroke=" + _this.linecolor + " d='" + path + "'  marker-end=\"url(#idArrow"+arrowCount+")\" /></svg>";
- 
+            "<path stroke-width='1.5' fill='none' class='my-line'  stroke=" + _this.linecolor + " d='" + path + "'  marker-end=\"url(#idArrow" + arrowCount + ")\" /></svg>";
+
         $("#" + paintDiv).append(newLine);
         $(".my-line").hover(function () {
             $(this).css("stroke", "red");
@@ -250,9 +290,9 @@ function Circuit() {
             ;
         }
         ;
-        var path = "M " +fromX + " " + fromY + " L " + p1X + " " + p1Y + " " + p2X + " " + p2Y + " " + toX + " " + toY;
+        var path = "M " + fromX + " " + fromY + " L " + p1X + " " + p1Y + " " + p2X + " " + p2Y + " " + toX + " " + toY;
         $(line).attr("d", path);
-     };
+    };
 
     //拖拽连线时，连接到目标引脚后，更新连线位置和线型，拖动器件时，连线跟随运动
     this.lineAdjust = function (line, startPin, endPin) {
@@ -609,7 +649,7 @@ function Circuit() {
     function switchClick(a) {
         if (!a) a = window.event;
         if (a.button == 2) {
-          return;
+            return;
         }
         ;
 
@@ -654,7 +694,7 @@ function Circuit() {
     function singlePulseClick(a) {
         if (!a) a = window.event;
         if (a.button == 2) {
-          return;
+            return;
         }
         ;
 
@@ -696,6 +736,44 @@ function Circuit() {
         $(".my-line").mouseout();
     };
 
+    // 清空画布，不弹出确认框，供 DSL 自动导入流程使用
+    this.clearAll = function () {
+        // 先移除所有组件（该过程也会通过 componentDelete 清理连线）
+        for (var i = _this.componentAll.length - 1; i >= 0; i--) {
+            var comp = _this.componentAll[i];
+            if (!comp) {
+                _this.componentAll.splice(i, 1);
+                continue;
+            }
+
+            var elem = document.getElementById(comp.id);
+            if (elem) {
+                componentDelete(elem);
+            } else {
+                _this.componentAll.splice(i, 1);
+            }
+        }
+
+        // 若仍有残留连线元素，统一移除
+        var demo = document.getElementById('demo');
+        if (demo) {
+            var orphanLines = demo.querySelectorAll('.div-line');
+            for (var j = 0; j < orphanLines.length; j++) {
+                var lineNode = orphanLines[j];
+                if (!lineNode) {
+                    continue;
+                }
+                if (typeof lineNode.remove === 'function') {
+                    lineNode.remove();
+                } else if (lineNode.parentNode) {
+                    lineNode.parentNode.removeChild(lineNode);
+                }
+            }
+        }
+
+        this.count = 0;
+    };
+
     this.deletecircuit = function () {
         // Add confirmation dialog before clearing circuit
         if (_this.componentAll.length > 0) {
@@ -727,11 +805,55 @@ function Circuit() {
 
 // Global function to edit text label
 function editTextLabel(component) {
-    var newText = prompt("请输入文字标注内容 (Enter text label):", component.text);
-    if (newText !== null && newText !== "") {
-        component.text = newText;
-        component.updateDisplay();
+    // Check if dialog already exists, if not create it
+    var $dialog = $("#textLabelDialog");
+    if ($dialog.length === 0) {
+        $dialog = $('<div id="textLabelDialog" title="编辑文字标注 (Edit Label)">' +
+            '<form>' +
+            '<fieldset style="border:none; padding: 10px;">' +
+            '<label for="labelText" style="display:block; margin-bottom:5px;">内容 (Text):</label>' +
+            '<textarea name="labelText" id="labelText" class="text ui-widget-content ui-corner-all" style="width: 100%; height: 60px; box-sizing: border-box; margin-bottom: 10px; padding: 5px;"></textarea>' +
+            '<div style="display: flex; justify-content: space-between;">' +
+            '<div style="width: 48%;">' +
+            '<label for="labelSize" style="display:block; margin-bottom:5px;">大小 (Size):</label>' +
+            '<input type="number" name="labelSize" id="labelSize" value="14" class="text ui-widget-content ui-corner-all" style="width: 100%; box-sizing: border-box; padding: 5px;">' +
+            '</div>' +
+            '<div style="width: 48%;">' +
+            '<label for="labelColor" style="display:block; margin-bottom:5px;">颜色 (Color):</label>' +
+            '<input type="color" name="labelColor" id="labelColor" value="#000000" class="text ui-widget-content ui-corner-all" style="width: 100%; height: 30px; box-sizing: border-box; padding: 2px;">' +
+            '</div>' +
+            '</div>' +
+            '</fieldset>' +
+            '</form>' +
+            '</div>').appendTo('body');
     }
+
+    $("#labelText").val(component.text);
+    $("#labelSize").val(component.fontSize || 14);
+    $("#labelColor").val(component.fontColor || "#000000");
+
+    $dialog.dialog({
+        modal: true,
+        width: 400,
+        buttons: {
+            "确定 (OK)": function () {
+                var text = $("#labelText").val();
+                var size = parseInt($("#labelSize").val());
+                var color = $("#labelColor").val();
+
+                if (text) {
+                    component.text = text;
+                    if (!isNaN(size)) component.fontSize = size;
+                    if (color) component.fontColor = color;
+                    component.updateDisplay();
+                }
+                $(this).dialog("close");
+            },
+            "取消 (Cancel)": function () {
+                $(this).dialog("close");
+            }
+        }
+    });
 }
 
 

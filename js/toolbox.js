@@ -10,64 +10,110 @@ This program is free software: you can redistribute it and/or modify it under th
 作者：湘南学院软件与通信工程学院张雯雰老师
 */
 
-
-
-
 function toolbox() {
-    var _this = this;
-    _this.tooltipSelected = 0;
-    _this.tooltipName = "";
-
     var init = function () {
-        $("#accordion li").mousedown(function (e) {
-            _this.tooltipSelected = 1;
-            _this.tooltipName = $(this).text();
+        // Initialize Accordion
+        $("#accordion").accordion({
+            heightStyle: "fill",
+            collapsible: true,
+            animate: 200 // Faster, smoother animation
         });
 
-        $("body").mouseup(function (e) {
-            if (_this.tooltipSelected == 1) {
-                lefttop = $("#toolbox").offset();
-                right = lefttop.left + $("#toolbox").width();
-                bottom = lefttop.top + $("#toolbox").height();
-                if (!(e.pageX > lefttop.left && e.pageX < right && e.pageY>lefttop.top && e.pageY <bottom)) {
-                    // alert(_this.tooltipName + "X: " + e.pageX + ", Y: " + e.pageY);
-                    var cName = _this.tooltipName;
- /*                   switch (_this.tooltipName) {
-                        case "开关":
-                            break;
-                        case "小灯":
-                            cName = "Led";
-                            break;
-                        default:
-                            cName = _this.tooltipName;
-                    };*/
-                    mycircuit.addComponent("demo", "Compo" + cName, e.pageX, e.pageY);
+        // Initialize Resizable Toolbox
+        $("#accordion-resizer").resizable({
+            minHeight: 250,
+            minWidth: 150,
+            // Remove the laggy 'resize' event handler. 
+            // The 'stop' event is sufficient if we really need to refresh, 
+            // but usually heightStyle: "fill" handles it well enough with CSS.
+            stop: function () {
+                $("#accordion").accordion("refresh");
+            }
+        });
+
+        // Make Toolbox Draggable
+        $("#toolbox").draggable({
+            handle: ".ui-widget-header", // Drag by header
+            containment: "window"
+        });
+
+        // Make List Items Draggable
+        $("#accordion li").draggable({
+            appendTo: "body",
+            helper: "clone",
+            revert: "invalid",
+            cursor: "move",
+            zIndex: 10000,
+            start: function (event, ui) {
+                $(ui.helper).addClass("ui-draggable-dragging");
+            }
+        });
+
+        // Make Canvas Droppable
+        $("#demo").droppable({
+            accept: "#accordion li",
+            drop: function (event, ui) {
+                var cName = ui.draggable.text().trim();
+
+                // Map Chinese names to Component Class Names if necessary
+                // This mapping should ideally be centralized
+                var componentMap = {
+                    "开关": "Switch",
+                    "小灯": "Led",
+                    "单脉冲": "SinglePulse",
+                    "连续脉冲": "ContinuousPulse",
+                    "74LS181": "74LS181",
+                    "74LS245": "74LS245",
+                    "74LS374": "74LS374",
+                    "6116RAM": "RAM6116",
+                    "2716ROM": "EPROM2716C3" // Assuming default
+                    // Add other mappings as needed based on the UI text
                 };
-            };
-            _this.tooltipSelected = 0;
-        });
 
+                // If direct mapping exists, use it. Otherwise try to use the text as is (for English names)
+                // Or check if the text contains the chip name
+                var finalName = cName;
 
-        $(function () { $("#accordion").accordion({ heightStyle: "fill" }); });
-        $(function () {
-            $("#accordion-resizer").resizable({
-                minHeight:250,
-                minWidth:150,
-                resize: function () {
-                    $("#accordion").accordion("refresh");
+                // Simple heuristic: if it contains English letters, try to extract them
+                // But for now, let's assume the text in LI matches or we use the map
+                if (componentMap[cName]) {
+                    finalName = componentMap[cName];
+                } else {
+                    // Fallback: Try to find a match in the text
+                    // e.g. "74LS181运算器" -> "74LS181"
+                    var match = cName.match(/[a-zA-Z0-9]+/);
+                    if (match) {
+                        finalName = match[0];
+                        // Special case handling
+                        if (finalName === "6116") finalName = "RAM6116";
+                        if (finalName === "2716") finalName = "EPROM2716C3";
+                    }
                 }
-            });
-            $("#accordion").accordion({ collapsible: true });
-        });
-        $(function () {
-            $("#toolbox").draggable({ handle: "h1" });
-        });
-        $(function () {
-            $("#accordion li").draggable({ appendTo: "#demo", helper: "clone" });
+
+                // Calculate drop position relative to #demo
+                var offset = $(this).offset();
+                var x = event.pageX - offset.left;
+                var y = event.pageY - offset.top;
+
+                // Snap to grid (10px)
+                x = Math.round(x / 10) * 10;
+                y = Math.round(y / 10) * 10;
+
+                // Add component
+                // Note: 'Compo' prefix is expected by circuitdiagram.js
+                // We need to ensure the class exists
+                var className = "Compo" + finalName;
+
+                if (typeof window[className] === 'function') {
+                    mycircuit.addComponent("demo", className, x, y);
+                } else {
+                    console.warn("Component class not found: " + className);
+                    // Try without Compo prefix or other variations if needed
+                    // But based on existing code, it expects Compo + Name
+                }
+            }
         });
     };
 
     init();
 };
-
-
